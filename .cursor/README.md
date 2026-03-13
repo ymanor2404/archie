@@ -1,6 +1,6 @@
 # Cursor setup for Archie
 
-Archie uses the **Google Workspace MCP** to read UX research from Drive, Docs, and Slides. Each user must configure the MCP with **their own** Google OAuth credentials and email. Credentials are **not** shared in this repo.
+Archie uses the **Google Workspace MCP** to read our UX research from Drive, Docs, and Slides. Each user must configure the MCP with **their own** Google OAuth credentials and email. Credentials are **not** shared in this repo.
 
 ## First-time setup (required for each user)
 
@@ -22,7 +22,7 @@ Edit `.cursor/mcp.json` and replace the placeholders with **your** values:
 |-------------|--------------|
 | `YOUR_GOOGLE_OAUTH_CLIENT_ID` | Your Google OAuth 2.0 client ID |
 | `YOUR_GOOGLE_OAUTH_CLIENT_SECRET` | Your Google OAuth 2.0 client secret |
-| `your.email@example.com` | Your Google account email (e.g. the account that has access to Archie's Context Folder) |
+| `your.email@example.com` | Your Google account email |
 
 **How to get OAuth credentials:**
 
@@ -40,13 +40,7 @@ Edit `.cursor/mcp.json` and replace the placeholders with **your** values:
 
 ### 4. First run
 
-The first time you use Archie (e.g. ask a question about UX research), the MCP may open a browser so you can sign in with the Google account you set as `USER_GOOGLE_EMAIL` and grant access. Do that once per machine.
-
----
-
-## Access to research data
-
-Archie’s primary source is **Archie’s Context Folder** in Google Drive. Your Google account must have access to that folder for Archie to find and read the research reports. If you don’t have access, request it from your team or the folder owner.
+The first time you use Archie (e.g. ask a question about our UX research), the MCP may open a browser so you can sign in with the Google account you set as `USER_GOOGLE_EMAIL` and grant access. Do that once per machine.
 
 ---
 

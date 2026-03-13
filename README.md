@@ -1,12 +1,11 @@
 # Archie — UX Research Insights Assistant
 
-**Archie** is a Cursor skill that lets you “talk to the data” in your UX research repository. Ask questions like *“What do we know about AI engineers from our UX research reports?”* and Archie uses the **Google Workspace MCP** to search and read reports from Google Drive (Slides, Docs, PDFs) and answer from that content.
+**Archie** is a Cursor skill that lets you “talk to the data” in our research repository. Ask questions like *“What do we know about AI engineers from our UX research reports?”* and Archie uses the **Google Workspace MCP** to search and read reports from Google Drive (Slides, Docs, PDFs) and answer from that content.
 
 ## What you need
 
 - **Cursor** with this project open (or the skill available in your workspace).
 - **Google Workspace MCP** configured in this project with **your own** Google OAuth credentials and email (credentials are per user, not stored in the repo).
-- **Access** to the research folder Archie uses (e.g. Archie’s Context Folder in Google Drive), so your Google account can read the files.
 
 ## Quick start
 
@@ -15,7 +14,7 @@
    - See [**.cursor/README.md**](.cursor/README.md) for step-by-step setup.
    - Copy `.cursor/mcp.json.example` to `.cursor/mcp.json` and add your Client ID, Client Secret, and Google email.
    - Restart Cursor so it loads the MCP.
-3. **Use Archie** in Cursor chat: ask a question about your UX research (personas, themes, studies, etc.). Archie will search the context folder, read relevant reports, and answer with citations and a tracing log.
+3. **Use Archie** in Cursor chat: ask a question about our UX research (personas, themes, studies, etc.). Archie will search the context folder, read relevant reports, and answer with citations and a tracing log.
 
 ## What’s in this repo
 
