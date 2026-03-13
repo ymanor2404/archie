@@ -1,0 +1,2 @@
+# Keep Google OAuth credentials out of version control
+.cursor/mcp.json
