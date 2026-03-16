@@ -11,21 +11,14 @@ Score each response on the criteria below. Use the scale **1–5** unless otherw
 - **Relevant** = a source that could validly be used to answer the query.
 - **Retrieved and used** = the source was fetched and its content is reflected in the answer (cited or paraphrased).
 
-**How to score:**
+**How to score:**  
+Establish the set of **relevant sources** for this query (documents in the context folder that contain information that could validly answer it—by auditing the folder or from pre-defined ground truth). Then:
 
-- **Option A (proportion):**  
-  Recall = (number of relevant sources retrieved and used) ÷ (total number of relevant sources).  
-  Establish “relevant sources” by auditing the context folder for that query (or from a pre-defined ground truth).  
-  Record as a **percentage (0–100%)** or map to 1–5 (e.g. 0–20% → 1, 21–40% → 2, …, 81–100% → 5).
+**Recall** = (number of those relevant sources that Archie retrieved and used) ÷ (total number of relevant sources).
 
-- **Option B (scale 1–5):**  
-  - **1** – Missed most or all key relevant sources; answer is missing major chunks of the dataset.  
-  - **2** – Retrieved only a minority of relevant sources.  
-  - **3** – Retrieved about half of the relevant sources.  
-  - **4** – Retrieved most relevant sources; only minor gaps.  
-  - **5** – Retrieved (and used) all or nearly all relevant sources.
+Record as a **percentage (0–100%)**. You can also map to 1–5 for averaging with other criteria (e.g. 0–20% → 1, 21–40% → 2, 41–60% → 3, 61–80% → 4, 81–100% → 5).
 
-**Score:** _____ (1–5 or _____%)  
+**Score:** _____ %  
 **Notes:** _________________________________________________
 
 ---
