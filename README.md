@@ -23,6 +23,7 @@
 | `.cursor/skills/archie/` | Archie skill: `SKILL.md` (when/how to use, tools), `INSTRUCTIONS.md` (behavior, tone, tracing, references). |
 | `.cursor/mcp.json.example` | Example MCP config; copy to `mcp.json` and add your credentials. |
 | `.cursor/README.md` | **First-time setup guide** — MCP config, OAuth, and enabling the skill. |
+| `eval/` | **Eval:** 15 prompts, rubric (including recall), and scoresheet to assess answer quality and retrieval. |
 
 The file `.cursor/mcp.json` is gitignored so your credentials are never committed.
 
