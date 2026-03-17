@@ -4,60 +4,63 @@ Use these prompts one at a time in Cursor with Archie enabled. Save or paste eac
 
 ---
 
-1. **Persona – AI engineers**  
-   What do we know about AI engineers from our UX research reports?
+1. **Targeted question**  
+   What were the key takeaways from the AI engineer workflows interview regarding the BYOK functionality?
 
-2. **Persona – platform engineers**  
-   What have we learned about platform engineers or platform engineering users from our research?
+2. **Targeted question**  
+   In the OpenShift Virtualization survey, what was the exact quote or finding related to rightsizing to prevent under-provisioning?
 
-3. **Targeted – specific report**  
-   What were the key takeaways from the "2025_Q3 UXDR-4550 AI Engineer Workflow Interviews" regarding model selection and RAG?
+3. **General question (time-bound)**  
+   What have we learned about HCC OpenShift Lightspeed in the last 6 months?
 
-4. **General – theme**  
-   What do we know about user pain points or challenges with RAG (retrieval-augmented generation) from our UX research?
+4. **General question (cross-study synthesis)**  
+   Across all studies, what are the common themes or pain points users consistently experience with onboarding into ISV Partner Managed Services?
 
-5. **General – theme**  
-   What have we learned about MCP servers or Model Context Protocol in our research?
+5. **Out-of-scope question (industry/external)**  
+   What is the industry-standard success rate for SaaS application onboarding?
 
-6. **Synthesis – product area**  
-   Summarize findings about the AI Playground (or OpenShift AI / Lightspeed) from our research reports.
+6. **Out-of-scope question (nonexistent feature)**  
+   What research do we have on the newly launched feature, Red Hat OpenShift Mobile Phones?
 
-7. **Time-bound**  
-   What did we learn from UX research conducted in 2024 or Q3 2024?
+7. **Assumption testing**  
+   I have an assumption that AI Engineers prefer command-line over UI for configuring their models. What evidence do we have that supports or refutes this?
 
-8. **Validation-style**  
-   Is there enough research to support the claim that "AI engineers want side-by-side model comparison in the UI"?
+8. **Direct quotes**  
+   Give me 3 direct, verbatim user quotes about RHEL Lightspeed frustrations that I can use in a slide deck.
 
-9. **Targeted – specific study type**  
-   Do we have any survey or survey-based research on Ansible AI or Ansible expectations? What did it find?
+9. **Methodology check**  
+   Was the data regarding Product360 gathered via a survey (quant) or interviews (qual)?
 
-10. **General – onboarding / discovery**  
-    What do we know about user onboarding, discovery, or first-time use from our UX research?
+10. **Methodology check**  
+    What kind of testing has been done in the InstructLab space?
 
-11. **Ambiguous (tests clarifying questions)**  
-    What have we learned about user sentiment in the last six months?
+11. **Recency filter**  
+    What are the most recent findings regarding the Hybrid Cloud Console from the last 12 months?
 
-12. **Developer / AI developer**  
-    What do we know about developers or AI developers from our research—workflows, tools, or pain points?
+12. **Contradiction search**  
+    I assume users love dark mode toggle buttons. Please find any research findings that contradicts this or show users struggling with it.
 
-13. **Specific concept**  
-    What does our research say about "human-in-the-loop" or evaluation with SMEs?
+13. **Dead end check**  
+    What are the top 3 questions about Red Hat OpenShift AI that our current research *cannot* answer?
 
-14. **Out of scope / no evidence**  
-    Do we have research that validates that enterprise users prefer vendor X over Red Hat for AI workloads?
+14. **Broad synthesis**  
+    I am new to the Hybrid Cloud Console. Summarize the top 3 user goals and top 3 user pain points I should be aware of.
 
-15. **Synthesis – multiple themes**  
-    What are the main research-backed recommendations or opportunities we’ve identified for Red Hat AI or OpenShift AI?
+15. **Feature validation**  
+    Did any users specifically request an AI model comparison feature in the last year of interviews?
 
 ---
 
 **Notes for evaluators**
 
-- **Prompts 1–2, 6, 12:** Expect retrieval of multiple reports; recall = proportion of relevant reports retrieved and used.
-- **Prompts 3, 9:** Targeted; expect at least one specific report; recall can be 0/1 or based on relevant sections.
-- **Prompts 4–5, 10, 13:** Theme/synthesis; many docs may be relevant; recall = proportion of relevant docs used.
-- **Prompt 7:** Time-bound; some reports may be excluded by date.
-- **Prompt 8:** Validation; answer should cite specific studies and say whether evidence is sufficient.
-- **Prompt 11:** Ambiguous; Archie may ask 1–3 clarifying questions before answering.
-- **Prompt 14:** Should answer that there is not enough research to validate (or clearly state if otherwise).
-- **Prompt 15:** Broad synthesis; high recall may require several reports.
+- **Prompts 1–2:** Targeted; expect specific reports with precise findings. Recall = did Archie find the right report(s) and pull the correct section.
+- **Prompts 3–4:** General/synthesis; expect multiple reports across time or studies. Recall = proportion of relevant reports retrieved.
+- **Prompts 5–6:** Out-of-scope; 5 should use external sources (and say so); 6 should clearly state no research exists and not fabricate evidence.
+- **Prompt 7:** Assumption testing; Archie should present evidence for and against, citing specific studies. Hedging matters.
+- **Prompt 8:** Direct quotes; Archie should provide verbatim quotes with full context (study name, participant, and setting).
+- **Prompts 9–10:** Methodology; Archie should identify the study type (survey vs interviews vs usability test) and stay within the context folder.
+- **Prompt 11:** Recency filter; Archie should surface only recent findings and note report dates.
+- **Prompt 12:** Contradiction search; Archie should be honest if no contradicting evidence exists rather than force-fitting.
+- **Prompt 13:** Dead end; Archie should identify gaps in the research rather than inventing coverage.
+- **Prompt 14:** Broad synthesis; expects cross-study synthesis for HCC. Recall = proportion of relevant HCC reports used.
+- **Prompt 15:** Feature validation; Archie should search for specific user requests and cite the source and participant if found.

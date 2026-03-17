@@ -1,2 +1,17 @@
-# Keep Google OAuth credentials out of version control
+# Keep credentials out of version control
 .cursor/mcp.json
+.env
+.env.local
+*.env
+
+# Python
+.venv/
+venv/
+__pycache__/
+*.pyc
+
+# Fetched Amplitude chart data (regenerate with scripts/fetch_all_charts.py)
+data/
+
+# OS
+.DS_Store
