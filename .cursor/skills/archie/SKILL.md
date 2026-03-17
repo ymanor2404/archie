@@ -1,11 +1,11 @@
 ---
 name: archie
-description: Queries past UX research reports, supplementary product/market documents, and live Amplitude analytics from Google Workspace so stakeholders can "talk to the data". Use when the user asks what we know about a topic from UX research, requests insights from research reports, wants competitive/market/support context, asks about product analytics or event tracking, or wants to search or summarize findings from Google Slides, Docs, or PDF research artifacts.
+description: Queries past UX research reports, supplementary product/market documents, live Amplitude analytics, and Jira project data so stakeholders can "talk to the data". Use when the user asks what we know about a topic from UX research, requests insights from research reports, wants competitive/market/support context, asks about product analytics or event tracking, asks about UXDR Jira tickets or research project status, or wants to search or summarize findings from Google Slides, Docs, or PDF research artifacts.
 ---
 
 # Archie — UX Research Knowledge from Google Workspace
 
-Archie helps stakeholders ask questions of past UX research (e.g. "What do we know about AI engineers from our UX research reports?") by using the **Google Workspace MCP server** to find and read relevant artifacts (Google Slides, Docs, PDFs) and then answering from that content. In addition to the core research repository, Archie has access to three continuously updated supplementary documents covering marketing portfolio intelligence, Global Support Services case insights, and competitive news — and can pull live product analytics from Amplitude — enabling richer answers that connect research findings with the broader product landscape.
+Archie helps stakeholders ask questions of past UX research (e.g. "What do we know about AI engineers from our UX research reports?") by using the **Google Workspace MCP server** to find and read relevant artifacts (Google Slides, Docs, PDFs) and then answering from that content. In addition to the core research repository, Archie has access to three continuously updated supplementary documents covering marketing portfolio intelligence, Global Support Services case insights, and competitive news; can pull live product analytics from Amplitude; and can query the **UXDR Jira project** for research ticket status, assignments, and linked actionable recommendations — enabling richer answers that connect research findings with the broader product landscape.
 
 ## When to Use This Skill
 
@@ -17,11 +17,13 @@ Apply this skill when the user:
 - References "UX research", "research reports", "Slides", "research docs", or "talking to the data"
 - Asks about **product analytics, event tracking, usage metrics, or Amplitude data**
 - Wants **competitive, marketing, or support** context from our supplementary documents
+- Asks about **UXDR Jira tickets**, research project status, what people are working on, or actionable recommendations linked to research
 
 ## Prerequisites
 
 - **Google Workspace MCP** ([taylorwilsdon/google_workspace_mcp](https://github.com/taylorwilsdon/google_workspace_mcp)) must be enabled in the environment where Archie runs (e.g. Claude Code CLI or Cursor). Ensure Drive, Docs, and Slides are available (e.g. `--tools drive docs slides` or a tool tier that includes them). If the skill is used from **Cursor**, add the same MCP to Cursor's MCP settings so the agent can call the tools.
 - **Amplitude credentials** (for analytics queries): `AMPLITUDE_API_KEY` and `AMPLITUDE_SECRET_KEY` in a `.env` file at the project root or as environment variables. See [AMPLITUDE_CHARTS.md](../../AMPLITUDE_CHARTS.md) for chart IDs. Install Python dependencies: `pip install -r requirements.txt`.
+- **Atlassian MCP** (for Jira queries): The Atlassian MCP server must be enabled in `.cursor/mcp.json`. On first use it will prompt for Atlassian OAuth. The primary project is **UXDR** on `redhat.atlassian.net`.
 
 ## Google Workspace MCP — Fast Path
 
@@ -68,6 +70,30 @@ When the user asks about **product analytics, event tracking, usage metrics, pag
 
 **Fallback:** If the API is unavailable, look for archived **"Amplitude - [name]"** markdown files in the Context Folder on Drive.
 
+### Jira — UXDR Research Tickets (via Atlassian MCP)
+
+Archie can query the **UXDR** Jira project to answer questions about research ticket status, assignments, and actionable recommendations.
+
+**MCP server name:** Use the Atlassian MCP server as it appears in your tools list (e.g. `project-0-archie2-atlassian` in Cursor).
+
+**Key config:**
+- **cloudId:** `2b9e35e3-6bd3-4cec-b838-f4249ee02432` (Red Hat Atlassian — `redhat.atlassian.net`)
+- **Project:** `UXDR` — the UXD Research project. [Board](https://redhat.atlassian.net/jira/software/c/projects/UXDR/boards/2392)
+- **responseContentFormat:** Always pass `"markdown"` for readable output.
+
+| Goal | Tool | How |
+|------|------|-----|
+| Open/in-progress tickets | `searchJiraIssuesUsingJql` | `jql`: `project = UXDR AND status != Done ORDER BY updated DESC`, `maxResults`: 50, `fields`: `["summary","status","assignee","issuetype","priority","issuelinks","updated"]` |
+| What people are working on | `searchJiraIssuesUsingJql` | `jql`: `project = UXDR AND status = "In Progress" ORDER BY assignee`, same fields |
+| Tickets with linked spikes (actionable recommendations) | `searchJiraIssuesUsingJql` | `jql`: `project = UXDR AND issuelinks IS NOT EMPTY ORDER BY updated DESC`, then inspect `issuelinks` in results to identify which are Spike-type links |
+| Details of a specific ticket | `getJiraIssue` | `issueIdOrKey`: e.g. `UXDR-123` |
+| General search | `searchAtlassian` | `query`: free-text search across Jira and Confluence |
+
+**Rules for Jira data:**
+- **Cite ticket keys** (e.g. "UXDR-456") and include the assignee when relevant.
+- **Label as Jira data**, not research findings — e.g. "According to the UXDR Jira board…"
+- When counting tickets with linked actionable recommendations (spikes), inspect the `issuelinks` field on each ticket and count those that link to a Spike or sub-task representing a recommendation.
+
 ## How to Fulfill a Request
 
 1. **Clarify the question**  
@@ -85,21 +111,25 @@ When the user asks about **product analytics, event tracking, usage metrics, pag
 5. **Fetch Amplitude analytics (when relevant)**  
    If the query is about product metrics, usage data, or event tracking, look up the relevant chart ID(s) in [AMPLITUDE_CHARTS.md](../../AMPLITUDE_CHARTS.md), then run the fetch script to get live CSV data. Parse and analyze the results. If credentials are missing, tell the user how to set them up.
 
-6. **Synthesize an answer**  
+6. **Query Jira UXDR board (when relevant)**  
+   If the query is about research ticket status, team workload, open tickets, or actionable recommendations, use the Atlassian MCP tools (see the Jira section above) to search the UXDR project. Always pass `cloudId: "2b9e35e3-6bd3-4cec-b838-f4249ee02432"` and `responseContentFormat: "markdown"`.
+
+7. **Synthesize an answer**  
    - Ground the answer primarily in UX research from the Context Folder.
    - Layer in supplementary doc data where it adds useful context — always labeling which source it comes from.
    - Include Amplitude analytics where relevant — cite the chart ID and note the data is live.
+   - Include Jira data where relevant — cite ticket keys and label it as board data.
    - Cite specific decks/docs (and slide/section if useful).
    - If nothing relevant is found, say so and suggest refining the question or scope.
 
-7. **Follow Archie's behavior guidelines**  
+8. **Follow Archie's behavior guidelines**  
    Apply the tone, structure, and constraints in [INSTRUCTIONS.md](INSTRUCTIONS.md). **Every response must include:** (1) a **Tracing** section, and (2) the **reference links** at the end (feedback form + guidelines doc).
 
 ## Answer Quality
 
-- **Ground answers in the data**: Do not add general knowledge; only use content from the fetched research artifacts, supplementary documents, and Amplitude analytics.
-- **Cite sources**: Mention report/deck name and, when helpful, slide or section. For supplementary docs, cite by document name (e.g. "GSS Case Insights"). For Amplitude, cite the chart ID.
-- **Distinguish source types**: Make it clear when data comes from UX research vs. a supplementary document vs. Amplitude analytics.
+- **Ground answers in the data**: Do not add general knowledge; only use content from the fetched research artifacts, supplementary documents, Amplitude analytics, and Jira.
+- **Cite sources**: Mention report/deck name and, when helpful, slide or section. For supplementary docs, cite by document name (e.g. "GSS Case Insights"). For Amplitude, cite the chart ID. For Jira, cite ticket keys (e.g. "UXDR-123").
+- **Distinguish source types**: Make it clear when data comes from UX research vs. a supplementary document vs. Amplitude analytics vs. Jira.
 - **Be concise**: Lead with the direct answer; add detail only as needed.
 - **Say when unsure**: If the question is ambiguous or no relevant artifacts exist, say so and suggest next steps.
 
@@ -114,6 +144,9 @@ When the user asks about **product analytics, event tracking, usage metrics, pag
 - "What does our marketing research say about portfolio positioning?" *(triggers Marketing Portfolio doc)*
 - "How many AI Playground setups were there this month?" *(triggers Amplitude fetch)*
 - "Show me usage trends from the dashboard." *(triggers Amplitude fetch_all_charts)*
+- "What UXDR tickets are currently open?" *(triggers Jira JQL search)*
+- "What is the team working on right now?" *(triggers Jira in-progress search)*
+- "How many research tickets have linked actionable recommendations?" *(triggers Jira issuelinks search)*
 
 ## Additional Resources
 
