@@ -22,7 +22,7 @@ Apply this skill when the user:
 ## Prerequisites
 
 - **Google Workspace MCP** ([taylorwilsdon/google_workspace_mcp](https://github.com/taylorwilsdon/google_workspace_mcp)) must be enabled in the environment where Archie runs (e.g. Claude Code CLI or Cursor). Ensure Drive, Docs, and Slides are available (e.g. `--tools drive docs slides` or a tool tier that includes them). If the skill is used from **Cursor**, add the same MCP to Cursor's MCP settings so the agent can call the tools.
-- **Amplitude credentials** (for analytics queries): `AMPLITUDE_API_KEY` and `AMPLITUDE_SECRET_KEY` in a `.env` file at the project root or as environment variables. See [AMPLITUDE_CHARTS.md](../../AMPLITUDE_CHARTS.md) for chart IDs. Install Python dependencies: `pip install -r requirements.txt`.
+- **Amplitude credentials** (for analytics queries): `AMPLITUDE_API_KEY` and `AMPLITUDE_SECRET_KEY` in a `.env` file at the project root or as environment variables. See [AMPLITUDE_CHARTS.md](../../amplitude-analytics/AMPLITUDE_CHARTS.md) for chart IDs. Install Python dependencies: `pip install -r amplitude-analytics/requirements.txt`.
 - **Atlassian MCP** (for Jira queries): The Atlassian MCP server must be enabled in `.cursor/mcp.json`. On first use it will prompt for Atlassian OAuth. The primary project is **UXDR** on `redhat.atlassian.net`.
 
 ## Google Workspace MCP — Fast Path
@@ -57,14 +57,14 @@ The UX research Context Folder remains the **primary source of truth**. Use thes
 
 ### Amplitude Analytics (live product data)
 
-When the user asks about **product analytics, event tracking, usage metrics, page views, or Amplitude data**, fetch live data from the Amplitude Dashboard REST API using the scripts in `scripts/`.
+When the user asks about **product analytics, event tracking, usage metrics, page views, or Amplitude data**, fetch live data from the Amplitude Dashboard REST API using the scripts in `amplitude-analytics/`.
 
 | Goal | Command (run from project root) | Notes |
 |------|--------------------------------|-------|
-| Fetch a single chart | `python scripts/fetch_amplitude_chart.py CHART_ID` | Output is CSV to stdout. Add `--eu` for EU region. |
-| Fetch all dashboard charts | `python scripts/fetch_all_charts.py` | Uses chart IDs from `scripts/chart_ids.txt`. Outputs CSV files to `data/`. |
+| Fetch a single chart | `python amplitude-analytics/fetch_amplitude_chart.py CHART_ID` | Output is CSV to stdout. Add `--eu` for EU region. |
+| Fetch all dashboard charts | `python amplitude-analytics/fetch_all_charts.py` | Uses chart IDs from `amplitude-analytics/chart_ids.txt`. Outputs CSV files to `amplitude-analytics/data/`. |
 
-**Chart registry:** [AMPLITUDE_CHARTS.md](../../AMPLITUDE_CHARTS.md) and `scripts/chart_ids.txt` list 22 chart IDs from the Red Hat dashboard. Match the user's question to the relevant chart(s) by name/description.
+**Chart registry:** [AMPLITUDE_CHARTS.md](../../amplitude-analytics/AMPLITUDE_CHARTS.md) and `amplitude-analytics/chart_ids.txt` list 22 chart IDs from the Red Hat dashboard. Match the user's question to the relevant chart(s) by name/description.
 
 **Credentials:** Requires `AMPLITUDE_API_KEY` and `AMPLITUDE_SECRET_KEY` in `.env` or environment. If missing, tell the user to set them up (do not guess).
 
@@ -109,7 +109,7 @@ Archie can query the **UXDR** Jira project to answer questions about research ti
    If the query touches marketing/positioning, support cases, or competitive landscape, also fetch the relevant supplementary doc(s) by their known IDs (see the Supplementary live documents table above). These are **live documents** — always fetch fresh content rather than relying on prior context. Cite them by name and distinguish them from UX research.
 
 5. **Fetch Amplitude analytics (when relevant)**  
-   If the query is about product metrics, usage data, or event tracking, look up the relevant chart ID(s) in [AMPLITUDE_CHARTS.md](../../AMPLITUDE_CHARTS.md), then run the fetch script to get live CSV data. Parse and analyze the results. If credentials are missing, tell the user how to set them up.
+   If the query is about product metrics, usage data, or event tracking, look up the relevant chart ID(s) in [AMPLITUDE_CHARTS.md](../../amplitude-analytics/AMPLITUDE_CHARTS.md), then run the fetch script to get live CSV data. Parse and analyze the results. If credentials are missing, tell the user how to set them up.
 
 6. **Query Jira UXDR board (when relevant)**  
    If the query is about research ticket status, team workload, open tickets, or actionable recommendations, use the Atlassian MCP tools (see the Jira section above) to search the UXDR project. Always pass `cloudId: "2b9e35e3-6bd3-4cec-b838-f4249ee02432"` and `responseContentFormat: "markdown"`.
@@ -151,4 +151,4 @@ Archie can query the **UXDR** Jira project to answer questions about research ti
 ## Additional Resources
 
 - **Agent behavior and prompting**: [INSTRUCTIONS.md](INSTRUCTIONS.md) — detailed instructions for how Archie should act, respond, and format answers. Read this when applying the skill.
-- **Chart registry**: [AMPLITUDE_CHARTS.md](../../AMPLITUDE_CHARTS.md) — list of Amplitude chart IDs from the Red Hat dashboard.
+- **Chart registry**: [AMPLITUDE_CHARTS.md](../../amplitude-analytics/AMPLITUDE_CHARTS.md) — list of Amplitude chart IDs from the Red Hat dashboard.

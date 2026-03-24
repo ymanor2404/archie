@@ -6,7 +6,7 @@
 
 - **Cursor** with this project open (or the skill available in your workspace).
 - **Google Workspace MCP** configured in this project with **your own** Google OAuth credentials and email (credentials are per user, not stored in the repo).
-- **Amplitude credentials** (optional, for analytics queries): `AMPLITUDE_API_KEY` and `AMPLITUDE_SECRET_KEY` in a `.env` file or environment variables. Get the shared keys from your team maintainer.
+- **Amplitude credentials** (optional, for analytics queries): `AMPLITUDE_API_KEY` and `AMPLITUDE_SECRET_KEY` in a `.env` file at the project root or environment variables. Get the shared keys from your team maintainer.
 
 ## Quick start
 
@@ -17,8 +17,8 @@
    - Restart Cursor so it loads the MCP.
 3. **Set up Amplitude** (optional — for product metrics):
    - Create a `.env` file in the project root with your `AMPLITUDE_API_KEY` and `AMPLITUDE_SECRET_KEY`.
-   - Run `pip install -r requirements.txt` to install Python dependencies.
-   - See [AMPLITUDE_CHARTS.md](AMPLITUDE_CHARTS.md) for the chart registry.
+   - Run `pip install -r amplitude-analytics/requirements.txt` to install Python dependencies.
+   - See [amplitude-analytics/AMPLITUDE_CHARTS.md](amplitude-analytics/AMPLITUDE_CHARTS.md) for the chart registry.
 4. **Use Archie** in Cursor chat: ask a question about our UX research (personas, themes, studies, etc.), product analytics, or competitive/market context. Archie will search the context folder, read relevant reports, fetch live data as needed, and answer with citations and a tracing log.
 
 ## What's in this repo
@@ -28,8 +28,7 @@
 | `.cursor/skills/archie/` | Archie skill: `SKILL.md` (when/how to use, tools), `INSTRUCTIONS.md` (behavior, tone, tracing, references). |
 | `.cursor/mcp.json.example` | Example MCP config; copy to `mcp.json` and add your credentials. |
 | `.cursor/README.md` | **First-time setup guide** — MCP config, OAuth, Amplitude, and enabling the skill. |
-| `scripts/` | Amplitude fetch scripts: `fetch_amplitude_chart.py` (single chart), `fetch_all_charts.py` (all dashboard charts). |
-| `AMPLITUDE_CHARTS.md` | Chart ID registry for the Red Hat Amplitude dashboard. |
+| `amplitude-analytics/` | Amplitude fetch scripts, chart ID registry, and Python dependencies. |
 | `eval/` | **Eval:** 15 prompts, rubric (including recall), and scoresheet to assess answer quality and retrieval. |
 
 The files `.cursor/mcp.json` and `.env` are gitignored so your credentials are never committed.

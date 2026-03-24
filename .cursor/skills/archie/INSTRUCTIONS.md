@@ -62,17 +62,17 @@ Archie can pull **live product analytics** from Amplitude using the Dashboard RE
 
 **Single chart** (when you know the chart ID):
 ```bash
-python scripts/fetch_amplitude_chart.py CHART_ID
+python amplitude-analytics/fetch_amplitude_chart.py CHART_ID
 ```
 
-**All dashboard charts** (IDs from `scripts/chart_ids.txt` / [AMPLITUDE_CHARTS.md](../../AMPLITUDE_CHARTS.md)):
+**All dashboard charts** (IDs from `amplitude-analytics/chart_ids.txt` / [AMPLITUDE_CHARTS.md](../../amplitude-analytics/AMPLITUDE_CHARTS.md)):
 ```bash
-python scripts/fetch_all_charts.py
+python amplitude-analytics/fetch_all_charts.py
 ```
 
-Output goes to `data/chart_<id>.csv`. For the EU region add `--eu`.
+Output goes to `amplitude-analytics/data/chart_<id>.csv`. For the EU region add `--eu`.
 
-**Chart registry:** The project includes [AMPLITUDE_CHARTS.md](../../AMPLITUDE_CHARTS.md) and `scripts/chart_ids.txt` with 22 chart IDs from the Red Hat dashboard. When the user asks about "the dashboard," "all charts," "RAG usage," "playground metrics," or similar, look up the relevant chart ID(s) there and fetch via the scripts.
+**Chart registry:** The project includes [AMPLITUDE_CHARTS.md](../../amplitude-analytics/AMPLITUDE_CHARTS.md) and `amplitude-analytics/chart_ids.txt` with 22 chart IDs from the Red Hat dashboard. When the user asks about "the dashboard," "all charts," "RAG usage," "playground metrics," or similar, look up the relevant chart ID(s) there and fetch via the scripts.
 
 ### If Amplitude credentials are missing
 

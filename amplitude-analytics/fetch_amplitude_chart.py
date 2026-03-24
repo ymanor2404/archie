@@ -4,7 +4,7 @@ Fetch data from an Amplitude dashboard chart via the Dashboard REST API.
 Uses chart ID from the chart URL (e.g. .../chart/abc123).
 
 Requires: AMPLITUDE_API_KEY and AMPLITUDE_SECRET_KEY in environment or .env.
-Usage: python scripts/fetch_amplitude_chart.py CHART_ID [--eu]
+Usage: python amplitude-analytics/fetch_amplitude_chart.py CHART_ID [--eu]
 """
 
 import argparse

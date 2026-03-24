@@ -4,26 +4,7 @@ Score each response on the criteria below. Use the scale **1–5** unless otherw
 
 ---
 
-## 1. Recall (retrieval) — required
-
-**Definition:** Of the documents in Archie’s Context Folder that contain *relevant* information for this query, what proportion did Archie actually retrieve and use in the response?
-
-- **Relevant** = a source that could validly be used to answer the query.
-- **Retrieved and used** = the source was fetched and its content is reflected in the answer (cited or paraphrased).
-
-**How to score:**  
-Establish the set of **relevant sources** for this query (documents in the context folder that contain information that could validly answer it—by auditing the folder or from pre-defined ground truth). Then:
-
-**Recall** = (number of those relevant sources that Archie retrieved and used) ÷ (total number of relevant sources).
-
-Record as a **percentage (0–100%)**. You can also map to 1–5 for averaging with other criteria (e.g. 0–20% → 1, 21–40% → 2, 41–60% → 3, 61–80% → 4, 81–100% → 5).
-
-**Score:** _____ %  
-**Notes:** _________________________________________________
-
----
-
-## 2. Relevance / answer quality
+## 1. Relevance / answer quality
 
 Does the response directly address the question? Is the content on-topic and useful?
 
@@ -38,7 +19,7 @@ Does the response directly address the question? Is the content on-topic and use
 
 ---
 
-## 3. Citation quality
+## 2. Citation quality
 
 Are sources named clearly? Can a reader trace claims back to specific reports (and ideally slides/sections)?
 
@@ -53,7 +34,7 @@ Are sources named clearly? Can a reader trace claims back to specific reports (a
 
 ---
 
-## 4. Synthesis and structure
+## 3. Synthesis and structure
 
 Is the answer organized by theme or insight (not just a list of docs)? Are connections between sources clear?
 
@@ -68,7 +49,7 @@ Is the answer organized by theme or insight (not just a list of docs)? Are conne
 
 ---
 
-## 5. Required elements
+## 4. Required elements
 
 - **Tracing section:** Present and describes query terms, documents searched, and findings used? (Y/N)  
 - **Reference links footer:** Feedback form + guidelines doc links at end? (Y/N)
@@ -78,7 +59,7 @@ Is the answer organized by theme or insight (not just a list of docs)? Are conne
 
 ---
 
-## 6. Grounding (no hallucination)
+## 5. Grounding (no hallucination)
 
 Does the response use *only* information from retrieved sources? No invented studies, numbers, or quotes?
 
@@ -93,7 +74,7 @@ Does the response use *only* information from retrieved sources? No invented stu
 
 ---
 
-## 7. Appropriate hedging (when applicable)
+## 6. Appropriate hedging (when applicable)
 
 For validation or “do we have evidence” questions: does Archie say “evidence is limited” or “no research to validate” when that’s true? For weak evidence, is the limitation stated?
 
@@ -112,13 +93,11 @@ For validation or “do we have evidence” questions: does Archie say “eviden
 
 | Criterion              | Score | Notes (brief) |
 |------------------------|-------|----------------|
-| 1. Recall (retrieval)  |       |                |
-| 2. Relevance           |       |                |
-| 3. Citation quality    |       |                |
-| 4. Synthesis           |       |                |
-| 5. Required elements   | Y/N   |                |
-| 6. Grounding           |       |                |
-| 7. Hedging             |       |                |
+| 1. Relevance           |       |                |
+| 2. Citation quality    |       |                |
+| 3. Synthesis           |       |                |
+| 4. Required elements   | Y/N   |                |
+| 5. Grounding           |       |                |
+| 6. Hedging             |       |                |
 
-**Overall (optional):** Average of 1–4 and 6–7, or a single 1–5 “overall quality” score.  
-**Recall** should be tracked separately (and at least one criterion in every eval run).
+**Overall (optional):** Average of 1–3 and 5–6, or a single 1–5 “overall quality” score.  

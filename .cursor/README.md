@@ -64,12 +64,12 @@ AMPLITUDE_SECRET_KEY=<value from maintainer>
 ### 3. Install Python dependencies
 
 ```bash
-pip install -r requirements.txt
+pip install -r amplitude-analytics/requirements.txt
 ```
 
 ### 4. Chart IDs
 
-The file [AMPLITUDE_CHARTS.md](../AMPLITUDE_CHARTS.md) and `scripts/chart_ids.txt` list the chart IDs from the Red Hat dashboard. When you ask Archie about metrics or analytics, it uses these to fetch the right chart data.
+The file [AMPLITUDE_CHARTS.md](../amplitude-analytics/AMPLITUDE_CHARTS.md) and `amplitude-analytics/chart_ids.txt` list the chart IDs from the Red Hat dashboard. When you ask Archie about metrics or analytics, it uses these to fetch the right chart data.
 
 ---
 

@@ -31,4 +31,4 @@ List chart IDs here so the team (and the Cursor skill) can reference them by nam
 | 21 | hlw1dhxw   |
 | 22 | tgvkvj9i   |
 
-The Cursor skill and `scripts/fetch_all_charts.py` use these IDs to fetch data.
+The Cursor skill and `amplitude-analytics/fetch_all_charts.py` use these IDs to fetch data.

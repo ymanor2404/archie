@@ -6,9 +6,9 @@ Respects rate limits with a delay between requests.
 
 Requires: AMPLITUDE_API_KEY and AMPLITUDE_SECRET_KEY in environment or .env.
 Usage:
-  python scripts/fetch_all_charts.py
-  python scripts/fetch_all_charts.py pg2jebgb l3iy6kj6 gw3zp5d0
-  python scripts/fetch_all_charts.py --from-file chart_ids.txt --out-dir data
+  python amplitude-analytics/fetch_all_charts.py
+  python amplitude-analytics/fetch_all_charts.py pg2jebgb l3iy6kj6 gw3zp5d0
+  python amplitude-analytics/fetch_all_charts.py --from-file chart_ids.txt --out-dir data
 """
 
 import argparse
@@ -33,7 +33,7 @@ DEFAULT_BASE = "https://amplitude.com"
 EU_BASE = "https://analytics.eu.amplitude.com"
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 DEFAULT_CHARTS_FILE = os.path.join(SCRIPT_DIR, "chart_ids.txt")
-DEFAULT_OUT_DIR = os.path.join(os.path.dirname(SCRIPT_DIR), "data")
+DEFAULT_OUT_DIR = os.path.join(SCRIPT_DIR, "data")
 DELAY_SECONDS = 2  # between requests to avoid rate limits
 
 
