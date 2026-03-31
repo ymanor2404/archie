@@ -10,8 +10,7 @@ venv/
 __pycache__/
 *.pyc
 
-# Fetched Amplitude chart data (regenerate with amplitude-analytics/fetch_all_charts.py)
-amplitude-analytics/data/
+# Data
 data/
 
 # OS

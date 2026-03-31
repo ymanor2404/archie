@@ -47,55 +47,47 @@ These three documents are **continuously updated** and provide broader product a
 
 ---
 
-## Analytics & event tracking (Amplitude)
+## Analytics & event tracking (Amplitude plugin MCP)
 
-Archie can pull **live product analytics** from Amplitude using the Dashboard REST API. Use this when the query is about **analytics**, **event tracking**, **metrics**, **usage frequency**, **page views**, or user interaction data.
+Archie can pull **live product analytics** from Amplitude using the **Amplitude plugin MCP server** (server name: `plugin-amplitude-amplitude`). Use this when the query is about **analytics**, **event tracking**, **metrics**, **usage frequency**, **page views**, or user interaction data.
 
-### Two data paths (prefer live API)
+### Two data paths (prefer live MCP)
 
 | Path | When to use | How |
 |------|-------------|-----|
-| **Live API (preferred)** | User asks for current/recent metrics, or you need the freshest data. | Run the fetch scripts from the project root (see below). Requires `AMPLITUDE_API_KEY` and `AMPLITUDE_SECRET_KEY` in `.env` or environment. |
-| **Archived markdown** | Fallback only — if the API is unavailable (missing credentials, rate-limited, etc.), or the user explicitly references a markdown file. | Look for **"Amplitude - [name]"** `.md` files in [Archie's Context Folder](https://drive.google.com/drive/folders/1yW2GbqKThAskAAKA1UodTWqMzWZbVBo1) on Drive. If using these, check "Report Generated" date and disclaim if data is older than 30 days. |
+| **Amplitude plugin MCP (preferred)** | User asks for current/recent metrics, or you need the freshest data. | Use the Amplitude MCP tools (see below). The plugin is enabled in Cursor Settings → Plugins. |
+| **Archived markdown** | Fallback only — if the plugin is unavailable, or the user explicitly references a markdown file. | Look for **"Amplitude - [name]"** `.md` files in [Archie's Context Folder](https://drive.google.com/drive/folders/1yW2GbqKThAskAAKA1UodTWqMzWZbVBo1) on Drive. If using these, check "Report Generated" date and disclaim if data is older than 30 days. |
 
-### Fetching live data
+### Fetching live data via the Amplitude MCP
 
-**Single chart** (when you know the chart ID):
-```bash
-python amplitude-analytics/fetch_amplitude_chart.py CHART_ID
-```
+Use the `plugin-amplitude-amplitude` MCP server. Key tools:
 
-**All dashboard charts** (IDs from `amplitude-analytics/chart_ids.txt` / [AMPLITUDE_CHARTS.md](../../amplitude-analytics/AMPLITUDE_CHARTS.md)):
-```bash
-python amplitude-analytics/fetch_all_charts.py
-```
+| Goal | MCP Tool |
+|------|----------|
+| Organization & projects | `get_context` — call at start of session to see accessible projects. |
+| Project settings | `get_project_context` — detailed settings for a project. |
+| Discover events | `get_events` — list tracked events (project-specific). |
+| Event properties | `get_event_properties` — discover properties for filtering. |
+| Query a single chart | `query_chart` — deep-dive with interactive rendering. |
+| Compare multiple charts | `query_charts` — side-by-side comparison. |
+| List charts | `get_charts` — discover available charts. |
+| Dashboard overview | `get_dashboard` — fetch dashboard-level data. |
+| Free-text search | `search` — search across Amplitude. |
 
-Output goes to `amplitude-analytics/data/chart_<id>.csv`. For the EU region add `--eu`.
+**Important:** Event and property names are project-specific. Always use `get_events` or `get_event_properties` to discover valid names before using them in filters. Never assume or guess event names.
 
-**Chart registry:** The project includes [AMPLITUDE_CHARTS.md](../../amplitude-analytics/AMPLITUDE_CHARTS.md) and `amplitude-analytics/chart_ids.txt` with 22 chart IDs from the Red Hat dashboard. When the user asks about "the dashboard," "all charts," "RAG usage," "playground metrics," or similar, look up the relevant chart ID(s) there and fetch via the scripts.
+### If the Amplitude plugin is not available
 
-### If Amplitude credentials are missing
-
-Do **not** guess or invent keys. Tell the user:
-- Set `AMPLITUDE_API_KEY` and `AMPLITUDE_SECRET_KEY` in a `.env` file at the project root (gitignored) or as environment variables.
-- Get the shared keys from the team maintainer or your organization's secret store.
-
-### How to analyze the data
-
-1. Parse the CSV returned by the fetch script.
-2. Calculate total sum or average for the period requested.
-3. Find **Peak** (highest value) and **Trough** (lowest value) and note the dates.
-4. Compare first half vs second half of the period: trending up, down, or stagnant?
-5. Note any anomalies (sudden spikes, drops, weekday/weekend patterns).
+Tell the user to enable the **Amplitude** plugin in **Cursor Settings → Plugins**. No API keys or secrets are needed in this repo — the plugin handles authentication directly.
 
 ### How to report to the user
 
 - **Direct answer first:** Lead with the number/metric (e.g. "There were 450 unique page views in the last 30 days").
 - **Narrative trend:** Describe behavior (e.g. "peaked," "stabilized," "declined").
 - **So what?:** Briefly explain what the data implies about user behavior (e.g. "Usage spikes every Wednesday, suggesting a weekly routine").
-- **Data integrity:** State the chart ID and when the data was fetched (or, for archived markdown, the file name and report generation date).
+- **Data integrity:** State the chart name/ID and note the data was fetched live via the Amplitude plugin (or, for archived markdown, the file name and report generation date).
 
-**Example:** User asks about AI Playground setups → look up the relevant chart ID in `AMPLITUDE_CHARTS.md`, fetch it, parse the CSV, then report: "There have been 12 setups this month, peaking on Tuesday the 14th. This represents a 20% increase over the previous period. Source: Amplitude chart `pg2jebgb`, fetched live."
+**Example:** User asks about AI Playground setups → use `search` or `get_charts` to find the relevant chart, then `query_chart` to fetch the data. Report: "There have been 12 setups this month, peaking on Tuesday the 14th. This represents a 20% increase over the previous period. Source: Amplitude chart 'AI Playground Setups', fetched live via plugin."
 
 ---
 

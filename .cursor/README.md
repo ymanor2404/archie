@@ -44,32 +44,13 @@ The first time you use Archie (e.g. ask a question about our UX research), the M
 
 ---
 
-## Amplitude analytics setup (optional — for product metrics queries)
+## Amplitude analytics (optional — via Cursor plugin)
 
-Archie can pull live product analytics from Amplitude. If you want to use this capability:
+Archie can pull live product analytics from Amplitude using the **Amplitude plugin MCP server** — no API keys or Python scripts needed in this repo.
 
-### 1. Get Amplitude credentials
-
-Get the shared `AMPLITUDE_API_KEY` and `AMPLITUDE_SECRET_KEY` from your team maintainer or your organization's secret store (e.g. 1Password, internal wiki).
-
-### 2. Create a `.env` file
-
-In the project root (not inside `.cursor/`), create a `.env` file (it's in `.gitignore`):
-
-```bash
-AMPLITUDE_API_KEY=<value from maintainer>
-AMPLITUDE_SECRET_KEY=<value from maintainer>
-```
-
-### 3. Install Python dependencies
-
-```bash
-pip install -r amplitude-analytics/requirements.txt
-```
-
-### 4. Chart IDs
-
-The file [AMPLITUDE_CHARTS.md](../amplitude-analytics/AMPLITUDE_CHARTS.md) and `amplitude-analytics/chart_ids.txt` list the chart IDs from the Red Hat dashboard. When you ask Archie about metrics or analytics, it uses these to fetch the right chart data.
+1. Go to **Cursor Settings → Plugins** and enable the **Amplitude** plugin.
+2. The plugin provides its own MCP server with tools like `query_chart`, `get_charts`, `get_dashboard`, `search`, and more.
+3. Ask Archie about product metrics or analytics and it will use the Amplitude MCP tools automatically.
 
 ---
 
@@ -83,11 +64,4 @@ export GOOGLE_OAUTH_CLIENT_SECRET="your-client-secret"
 export USER_GOOGLE_EMAIL="your.email@example.com"
 ```
 
-For Amplitude, you can also export in the same place:
-
-```bash
-export AMPLITUDE_API_KEY="your-amplitude-api-key"
-export AMPLITUDE_SECRET_KEY="your-amplitude-secret-key"
-```
-
-Then restart Cursor. The MCP and scripts will read the variables from the environment.
+Then restart Cursor. The MCP will read the variables from the environment.
