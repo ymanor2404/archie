@@ -65,15 +65,21 @@ The best way to interact with Archie is to ask specific questions about research
 | "What is the status of the 'Project Alpha' code deployment?"         | This is engineering project status outside the UXDR Jira project and Google Drive. |
 
 
-**5 The Tracing Log**  
+**5 The Tracing Log and End-of-Response Elements**  
 Unlike other AI tools, Archie is required to "show its work."  
 Every time Archie provides an answer, it will include a Tracing Log at the bottom of the response. This log will list:
 
 1. The key terms identified in your query.
 2. The specific documents searched and keywords used.
 3. The relevant sections and sources data was pulled from (including which data source type: UX research, supplementary doc, Amplitude, or Jira).
+4. **Why Archie made those choices** — why particular sources were selected, why certain search terms were used, why specific insights were surfaced over other material, and (when applicable) why a particular Amplitude chart, Jira query, or supplementary document was consulted. This gives you a transparent view of Archie's reasoning, not just a list of what was used.
 
-Review this log to ensure that the insights are coming from the correct documents and sources. If, for any reason, this log is not provided, you may instruct Archie to provide it by simply stating "Please provide the tracing log for your previous output."
+Review this log to ensure that the insights are coming from the correct documents and that Archie's reasoning makes sense for your question. If, for any reason, this log is not provided, you may instruct Archie to provide it by simply stating "Please provide the tracing log for your previous output."
+
+After the tracing log, every response also includes:
+
+- **Feedback and guidelines links** — links to the Archie feedback form and these best-practice guidelines.
+- **Limitations disclaimer** — a brief closing statement reminding you that Archie is an AI tool that may hallucinate, that you should verify cited sources, and that the number of documents consulted may not represent the full repository. See Section 7 for more on responsible usage.
 
 **6 Archie's Data Sources and Integrations**  
 Archie connects to its data sources through MCP (Model Context Protocol) servers configured in the Cursor IDE. Each integration serves a specific purpose:
@@ -87,8 +93,10 @@ If an optional integration is not configured, Archie will note this and provide 
 **7 Responsible AI Usage: The "Human-in-the-Loop"**  
 While Archie is a powerful accelerator for finding and synthesizing UX knowledge, it is an assistive tool, not a replacement for critical thinking. Users must adhere to the following principles to ensure data integrity and safe decision-making.
 
+- **End-of-response disclaimer:** Every Archie answer ends with a brief **limitations disclaimer** (after the feedback and guidelines links). It reminds you that Archie is an AI system that may hallucinate or produce inaccurate summaries, that you should **check the original sources** Archie referenced, and that the number of reports or artifacts consulted is not an exhaustive picture of the repository—search can miss documents, and other relevant studies may exist. **Read it every time**; it is there so risk and coverage limits are explicit, not buried.
+
 - **Do Not Trust at Face Value:** AI models can hallucinate or misinterpret nuances in data. Treat Archie's responses as a starting point, not the final word. **Never** copy and paste an answer directly into a report or presentation without reviewing it for accuracy first.
-- **Citation Review:** Archie is engineered to provide citations to source files whenever it retrieves internal data — including report/deck names, slide or section references, Amplitude chart IDs, and Jira ticket keys. It is the user's responsibility to verify these citations against the original sources.
+- **Citation Review:** Archie is engineered to provide **direct, clickable links** for every source it references — including **Google Drive (or Docs/Slides) links** for reports and documents, **`https://redhat.atlassian.net/browse/...` links** for UXDR tickets, and **Amplitude chart links or chart IDs** so you can open or locate the exact chart. Report/deck names, slide or section references, and keys alone are not sufficient; use the links Archie provides to **open the original artifact and verify** the citation.
 - **Distinguish Source Types:** Archie draws from multiple source types (UX research reports, supplementary live docs, Amplitude analytics, Jira, and web sources). Pay attention to how Archie labels each source — data from a supplementary marketing document or Jira board is not the same as a validated UX research finding.
 - **Context vs. Strategy:** Archie has been tested and optimized for its ability to provide relevant context and information retrieval. It has not been validated for strategic actionability. Archie can tell you what users said in a past study (context) or show you current usage metrics (data). It cannot reliably tell you what specific business move Red Hat should make next based on that information (strategy). Strategic application of the data remains a human responsibility.
 - **Data Grounding:** Archie is instructed to ground its answers in the data it retrieves and to explicitly state when evidence is limited or absent. If Archie says "There does not exist enough research to validate this query," take that at face value — do not push for a speculative answer.

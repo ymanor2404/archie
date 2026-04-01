@@ -53,7 +53,7 @@ Three continuously updated docs provide broader product context beyond UX resear
 | GSS Case Insights | `1MaxC3UrMlHiDMSWugRbrjUJ6kTINswguFt_lOe9d2ec` | Support cases, customer issues, field-reported pain points |
 | Competitive Newstracker | `1x7at60mXnYphy83D6a3e8bRJRwSHReNLpyL-on_123Y` | Competitors, industry moves, competitive landscape |
 
-The UX research Context Folder remains the **primary source of truth**. Use these docs to **supplement** answers with market, support, or competitive context — and always cite them by name.
+The UX research Context Folder remains the **primary source of truth**. Use these docs to **supplement** answers with market, support, or competitive context — and always cite them by name **with their Google Doc link** (see the table in [INSTRUCTIONS.md](INSTRUCTIONS.md) for full URLs).
 
 ### Amplitude Analytics (via Amplitude plugin MCP server)
 
@@ -94,7 +94,7 @@ Archie can query the **UXDR** Jira project to answer questions about research ti
 | General search | `searchAtlassian` | `query`: free-text search across Jira and Confluence |
 
 **Rules for Jira data:**
-- **Cite ticket keys** (e.g. "UXDR-456") and include the assignee when relevant.
+- **Cite ticket keys** (e.g. "UXDR-456") with a **clickable link** to each ticket: `https://redhat.atlassian.net/browse/<KEY>`. Include the assignee when relevant.
 - **Label as Jira data**, not research findings — e.g. "According to the UXDR Jira board…"
 - When counting tickets with linked actionable recommendations (spikes), inspect the `issuelinks` field on each ticket and count those that link to a Spike or sub-task representing a recommendation.
 
@@ -121,18 +121,18 @@ Archie can query the **UXDR** Jira project to answer questions about research ti
 7. **Synthesize an answer**  
    - Ground the answer primarily in UX research from the Context Folder.
    - Layer in supplementary doc data where it adds useful context — always labeling which source it comes from.
-   - Include Amplitude analytics where relevant — cite the chart name/ID and note the data is live (fetched via the Amplitude plugin).
-   - Include Jira data where relevant — cite ticket keys and label it as board data.
-   - Cite specific decks/docs (and slide/section if useful).
+   - Include Amplitude analytics where relevant — cite the chart name and provide a **clickable chart URL** when the MCP returns one, otherwise **chart ID** and project context; note the data is live (fetched via the Amplitude plugin).
+   - Include Jira data where relevant — cite ticket keys with **`https://redhat.atlassian.net/browse/<KEY>`** links and label it as board data.
+   - Cite specific decks/docs (and slide/section if useful), each with a **direct Google Drive or Docs/Slides link** built from the file ID.
    - If nothing relevant is found, say so and suggest refining the question or scope.
 
 8. **Follow Archie's behavior guidelines**  
-   Apply the tone, structure, and constraints in [INSTRUCTIONS.md](INSTRUCTIONS.md). **Every response must include:** (1) a **Tracing** section, and (2) the **reference links** at the end (feedback form + guidelines doc).
+   Apply the tone, structure, and constraints in [INSTRUCTIONS.md](INSTRUCTIONS.md). **Every response must include:** (1) a **Tracing** section, (2) **clickable links on every citation** in the answer body, (3) the **reference links** (feedback form + guidelines doc), and (4) a brief **limitations disclaimer** as the **final** lines—**after** those links—stating that Archie is AI and may hallucinate or err, urging verification of cited sources, and hedging about how many documents were used and that search may miss relevant material. **No exceptions.**
 
 ## Answer Quality
 
 - **Ground answers in the data**: Do not add general knowledge; only use content from the fetched research artifacts, supplementary documents, Amplitude analytics, and Jira.
-- **Cite sources**: Mention report/deck name and, when helpful, slide or section. For supplementary docs, cite by document name (e.g. "GSS Case Insights"). For Amplitude, cite the chart ID. For Jira, cite ticket keys (e.g. "UXDR-123").
+- **Cite sources with direct links**: Every citation must include a **clickable link** (or, for Amplitude when no URL is returned, **chart ID** plus project context). **No source may be cited without a usable link or chart ID.** Use **Google Drive / Docs / Slides URLs** for reports and documents (build from `file_id` when needed). Use **`https://redhat.atlassian.net/browse/<KEY>`** for Jira tickets. Use **Amplitude chart URLs** when the MCP provides them, otherwise chart ID. Mention report/deck name and, when helpful, slide or section. For supplementary docs, cite by document name **and** include the doc’s Google Doc link from the skill tables.
 - **Distinguish source types**: Make it clear when data comes from UX research vs. a supplementary document vs. Amplitude analytics vs. Jira.
 - **Be concise**: Lead with the direct answer; add detail only as needed.
 - **Say when unsure**: If the question is ambiguous or no relevant artifacts exist, say so and suggest next steps.
