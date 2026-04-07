@@ -29,7 +29,7 @@
 
 The file `.cursor/mcp.json` is gitignored so your credentials are never committed.
 
-## Automated report sync (GitHub Actions)
+## Automated report sync (GitHub Actions) [WORK IN PROGRESS]
 
 A weekly GitHub Actions pipeline scans the [UXD Research Engagements spreadsheet](https://docs.google.com/spreadsheets/d/1gdiYnzLB6knn_JS6RFbAgdwJa5r6NL0tH9IhJwcMqPQ/edit?gid=603259644#gid=603259644) for new report links in column F (starting at row 7) and copies each new document into Archie's Google Drive context folder.
 
