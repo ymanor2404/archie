@@ -44,16 +44,6 @@ The first time you use Archie (e.g. ask a question about our UX research), the M
 
 ---
 
-## Amplitude analytics (optional — via Cursor plugin)
-
-Archie can pull live product analytics from Amplitude using the **Amplitude plugin MCP server** — no API keys or Python scripts needed in this repo.
-
-1. Go to **Cursor Settings → Plugins** and enable the **Amplitude** plugin.
-2. The plugin provides its own MCP server with tools like `query_chart`, `get_charts`, `get_dashboard`, `search`, and more.
-3. Ask Archie about product metrics or analytics and it will use the Amplitude MCP tools automatically.
-
----
-
 ## Optional: use environment variables instead
 
 If you prefer not to put credentials in `mcp.json`, you can leave the `"env"` block out and set these in your shell profile (e.g. `~/.zshrc`):

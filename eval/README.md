@@ -12,5 +12,5 @@ This folder supports **evaluation of Archie’s answers**: run a fixed set of pr
 
 | File | Purpose |
 |------|--------|
-| [prompts.md](prompts.md) | 15 eval prompts |
+| [prompts.md](prompts.md) | 14 eval prompts |
 | [rubric.md](rubric.md) | Scoring criteria |

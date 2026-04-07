@@ -1,8 +1,5 @@
 # Keep credentials out of version control
 .cursor/mcp.json
-.env
-.env.local
-*.env
 
 # Python
 .venv/
