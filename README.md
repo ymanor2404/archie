@@ -62,7 +62,7 @@ python scripts/sync_reports.py --dry-run  # preview without copying
 ## Feedback and guidelines
 
 - **Feedback on Archie:** [Share your feedback](https://forms.gle/renMTKS3KQnmN94a7)
-- **Archie guidelines / best practices:** [Guidelines doc](https://docs.google.com/document/d/1lr5gX9UPxwYz03sXitWWGOMI6LVgk4qd-whFdEzjNYQ/edit?tab=t.0)
+- **Archie guidelines / best practices:** [Guidelines doc](https://docs.google.com/document/d/1wPq_kw4BWvWxqLTKVTbip9evvUo5cwCqBl_Bh-TRywQ/edit?tab=t.kjgor4yq1ct7)
 
 ## License
 
