@@ -36,7 +36,7 @@
 
 The file `.cursor/mcp.json` is gitignored so your credentials are never committed.
 
-## Automated report sync (GitHub Actions) [WORK IN PROGRESS]
+## Automated report sync (GitHub Actions) {Work in Progress}
 
 A weekly GitHub Actions pipeline scans the [UXD Research Engagements spreadsheet](https://docs.google.com/spreadsheets/d/1gdiYnzLB6knn_JS6RFbAgdwJa5r6NL0tH9IhJwcMqPQ/edit?gid=603259644#gid=603259644) for new report links in column F (starting at row 7) and copies each new document into Archie's Google Drive context folder.
 
@@ -48,28 +48,15 @@ A weekly GitHub Actions pipeline scans the [UXD Research Engagements spreadsheet
 - Strips any "Copy of" prefix from the copy's name.
 - Exits with a non-zero code on any copy failure, which triggers a GitHub Actions email notification.
 
-### Setup — one-time steps
+### Related scripts
 
-1. **Create a Google Cloud service account** in a project with the **Google Sheets API** and **Google Drive API** enabled.
-2. **Share** the engagements spreadsheet with the service account email (Viewer role).
-3. **Share** Archie's context folder (`1yW2GbqKThAskAAKA1UodTWqMzWZbVBo1`) with the service account email (Editor role).
-4. **Share** any source report files (or their parent folder/shared drive) with the service account email (Viewer role) so the pipeline can read and copy them.
-5. In the GitHub repo, go to **Settings → Secrets and variables → Actions** and create a repository secret named **`GOOGLE_SERVICE_ACCOUNT_KEY`** containing the full JSON key file for the service account.
-6. In your GitHub **notification settings**, ensure "Actions" email notifications are enabled so you receive an email if the pipeline fails.
+The Python scripts in this repo are related to this pipeline for uploading past UX research reports to Archie's context folder. For those using Archie for simply research data querying purposes, you can ignore these scripts.
 
-### Local testing
-
-```bash
-export GOOGLE_SERVICE_ACCOUNT_KEY='<paste JSON key contents>'
-pip install -r scripts/requirements.txt
-python scripts/sync_reports.py            # real run
-python scripts/sync_reports.py --dry-run  # preview without copying
-```
 
 ## Feedback and guidelines
 
 - **Feedback on Archie:** [Share your feedback](https://forms.gle/renMTKS3KQnmN94a7)
-- **Archie guidelines / best practices:** [Guidelines doc](https://docs.google.com/document/d/1wPq_kw4BWvWxqLTKVTbip9evvUo5cwCqBl_Bh-TRywQ/edit?tab=t.kjgor4yq1ct7)
+- **Archie guidelines / best practices:** [Guidelines doc](https://docs.google.com/document/d/1lr5gX9UPxwYz03sXitWWGOMI6LVgk4qd-whFdEzjNYQ/edit?tab=t.0)
 
 ## License
 
