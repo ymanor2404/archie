@@ -6,14 +6,21 @@
 
 - **Cursor** with this project open (or the skill available in your workspace).
 - **Google Workspace MCP** configured in this project with **your own** Google OAuth credentials and email (credentials are per user, not stored in the repo).
+- **Python** (uv / uvx) — the MCP server is installed via `uvx`. If you don't have `uv`, install it: `curl -LsSf https://astral.sh/uv/install.sh | sh`
 
 ## Quick start
 
 1. **Clone this repo** (or pull the latest).
-2. **Set up the Google Workspace MCP** — credentials are scoped to you:
-   - See [**.cursor/README.md**](.cursor/README.md) for step-by-step setup.
-   - Copy `.cursor/mcp.json.example` to `.cursor/mcp.json` and add your Client ID, Client Secret, and Google email.
+
+2. **Set up the Google Workspace MCP** — see [**.cursor/README.md**](.cursor/README.md) for full details.
+
+   **If you already have Google Workspace MCP configured in Cursor** (e.g. in your user-level MCP settings), you can skip creating `.cursor/mcp.json` — just make sure Drive, Docs, and Slides tools are enabled and your Google email is set. See the [setup guide](.cursor/README.md#already-have-google-workspace-mcp-configured) for what to verify.
+
+   **If you do not have Google Workspace MCP configured yet**, you will need Google OAuth credentials:
+   - Copy `.cursor/mcp.json.example` to `.cursor/mcp.json` and fill in your Client ID, Client Secret, and Google email.
+   - See the [setup guide](.cursor/README.md) for how to obtain OAuth credentials from the Google Cloud Console.
    - Restart Cursor so it loads the MCP.
+
 3. **Use Archie** in Cursor chat: ask a question about our UX research (personas, themes, studies, etc.). Archie will search the Context Folder, read relevant reports, and answer with citations and a tracing log.
 
 ## What's in this repo
