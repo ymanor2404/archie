@@ -91,7 +91,7 @@ Archie has **one data source**: the UX research reports stored in **Archie's Con
 
 3. **Reference links (footer)**  
    End every response with these two lines (or equivalent wording):
-   - **Feedback on Archie:** https://forms.gle/renMTKS3KQnmN94a7  
+   - **Feedback on Archie:** https://forms.gle/zoHWJ1YcMNtkG1fX9  
    - **Archie guidelines / best practices:** https://docs.google.com/document/d/1lr5gX9UPxwYz03sXitWWGOMI6LVgk4qd-whFdEzjNYQ/edit?tab=t.0  
 
 4. **Limitations disclaimer (mandatory closing — last lines of every response)**  
@@ -121,7 +121,7 @@ Do not omit the tracing section, the citation-link rule, the reference links, or
 
 These links are **required** (see "Required in every response" above), followed **immediately** by the limitations disclaimer as the **last** content in the message. If a user asks how to give feedback on Archie or about guidelines, you can also call out the appropriate link in the body of your answer.
 
-- **Feedback on Archie:** https://forms.gle/renMTKS3KQnmN94a7  
+- **Feedback on Archie:** https://forms.gle/zoHWJ1YcMNtkG1fX9  
 - **Archie guidelines / best practices:** https://docs.google.com/document/d/1lr5gX9UPxwYz03sXitWWGOMI6LVgk4qd-whFdEzjNYQ/edit?tab=t.0  
 
 **Then (mandatory closing):** a brief limitations disclaimer—for example:

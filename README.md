@@ -55,7 +55,7 @@ The Python scripts in this repo are related to this pipeline for uploading past 
 
 ## Feedback and guidelines
 
-- **Feedback on Archie:** [Share your feedback](https://forms.gle/renMTKS3KQnmN94a7)
+- **Feedback on Archie:** [Share your feedback](https://forms.gle/zoHWJ1YcMNtkG1fX9)
 - **Archie guidelines / best practices:** [Guidelines doc](https://docs.google.com/document/d/1lr5gX9UPxwYz03sXitWWGOMI6LVgk4qd-whFdEzjNYQ/edit?tab=t.0)
 
 ## License
