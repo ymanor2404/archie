@@ -45,7 +45,7 @@ or whatever location you'd like to save it to.
 
 Then, clone the repo:
 ```bash
-cd git clone https://github.com/ymanor2404/archie
+git clone https://github.com/ymanor2404/archie
 ```
 If you run into any problems with using git commands, we recommend you install/mitigate those. They will be essential whenever you are pulling skills from GitHub. 
 
