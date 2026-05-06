@@ -24,18 +24,32 @@ Follow these steps if you do **not** have the Google Workspace MCP configured in
 
 You need OAuth 2.0 credentials so the MCP can access Google Drive on your behalf.
 
-1. Go to [Google Cloud Console](https://console.cloud.google.com/) and create or select a project.
+1. Go to [Google Cloud Console](https://console.cloud.google.com/) and create a new project. You can call it "Archie Google OAuth"
 2. Navigate to **APIs & Services → Credentials → Create Credentials → OAuth client ID**.
-3. Choose **Desktop application** as the application type.
-4. Copy the **Client ID** and **Client Secret** — you'll need them in the next step.
-5. In **APIs & Services → Library**, enable these three APIs:
+      a. You may be told that you need to configure your Consent screen before you can proceed with creating the OAuth client ID. In that case, navigate to configure the screen. Give a name like "Archie" and set the contact email to your Red Hat email. Set it to Internal.
+4. Choose **Desktop application** as the application type. Hit next.
+5. Copy the **Client ID** and **Client Secret** — you'll need them in the next step.
+6. In **APIs & Services → Library**, enable these three APIs:
    - **Google Drive API**
    - **Google Docs API**
    - **Google Slides API**
 
 > **Note:** If your organization's Google Cloud requires admin consent for new OAuth apps, you may need to request approval before the OAuth flow will work.
 
-### 2. Copy the MCP config template
+### 2. Set up Archie and copy the MCP config template
+Make a clone of this repo in your Terminal on your computer. If you want to save it to a specific location on your computer (Desktop, Downloads, etc), first do 
+```bash
+cd Desktop
+```
+or whatever location you'd like to save it to.
+
+Then, clone the repo:
+```bash
+cd git clone https://github.com/ymanor2404/archie
+```
+If you run into any problems with using git commands, we recommend you install/mitigate those. They will be essential whenever you are pulling skills from GitHub. 
+
+Then, make a copy of the MCP config template by copying and pasting this command into your Terminal:
 
 ```bash
 cp .cursor/mcp.json.example .cursor/mcp.json
@@ -43,7 +57,9 @@ cp .cursor/mcp.json.example .cursor/mcp.json
 
 The file `.cursor/mcp.json` is in `.gitignore`, so your credentials will never be committed.
 
-### 3. Add your credentials
+### 3. Set up Archie in Cursor and add your credentials
+
+Open the Archie project in Cursor. Under '.cursor', should see a file called mcp.json. There, you will copy and paste your credentials from step 1.
 
 Edit `.cursor/mcp.json` and replace the placeholders with **your** values:
 
@@ -81,25 +97,12 @@ Your `.cursor/mcp.json` should look like this when done:
 
 - Open **Cursor Settings** (e.g. **Cmd + Shift + J** / **Ctrl + Shift + J**) → **Tools & MCP**.
 - Ensure the **Google Workspace** MCP for this project is listed and enabled (Cursor loads it from `.cursor/mcp.json`).
-- If you just created `mcp.json`, **fully quit and restart Cursor** so it picks up the new config.
+- Select to enable the MCP server
+- **Fully quit and restart Cursor** so it picks up the new config.
 
 ### 5. First run
 
-The first time you use Archie (e.g. ask a question about UX research), the MCP will open a browser window so you can sign in with the Google account you set as `USER_GOOGLE_EMAIL` and grant access. This OAuth consent happens once per machine.
-
----
-
-## Alternative: use environment variables
-
-If you prefer not to put credentials directly in `mcp.json`, you can set them in your shell profile (e.g. `~/.zshrc` or `~/.bashrc`):
-
-```bash
-export GOOGLE_OAUTH_CLIENT_ID="your-client-id"
-export GOOGLE_OAUTH_CLIENT_SECRET="your-client-secret"
-export USER_GOOGLE_EMAIL="your.email@example.com"
-```
-
-Then remove the `"env"` block from `.cursor/mcp.json` (or `.cursor/mcp.json.example`) and restart Cursor. The MCP will read the variables from the environment.
+The first time you use Archie (e.g. ask a question about UX research), the MCP may open a browser window so you can sign in with the Google account you set as `USER_GOOGLE_EMAIL` and grant access. This OAuth consent happens once per machine.
 
 ---
 
