@@ -26,7 +26,9 @@ You need OAuth 2.0 credentials so the MCP can access Google Drive on your behalf
 
 1. Go to [Google Cloud Console](https://console.cloud.google.com/) and create a new project. You can call it "Archie Google OAuth"
 2. Navigate to **APIs & Services → Credentials → Create Credentials → OAuth client ID**.
-      a. You may be told that you need to configure your Consent screen before you can proceed with creating the OAuth client ID. In that case, navigate to configure the screen. Give a name like "Archie" and set the contact email to your Red Hat email. Set it to Internal.
+
+    a. You may be told that you need to configure your Consent screen before you can proceed with creating the OAuth client ID. In that case, navigate to configure the screen. Give a name like "Archie" and set the contact email to your Red Hat email. Set it to Internal.
+   
 4. Choose **Desktop application** as the application type. Hit next.
 5. Copy the **Client ID** and **Client Secret** — you'll need them in the next step.
 6. In **APIs & Services → Library**, enable these three APIs:
@@ -46,6 +48,7 @@ or whatever location you'd like to save it to.
 Then, clone the repo:
 ```bash
 git clone https://github.com/ymanor2404/archie
+cd archie
 ```
 If you run into any problems with using git commands, we recommend you install/mitigate those. They will be essential whenever you are pulling skills from GitHub. 
 
