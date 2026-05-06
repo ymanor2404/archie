@@ -26,6 +26,8 @@ Apply this skill when the user:
 
 **Content retrieval:** Use **`get_drive_file_content`** for **all** readable content from Slides, Docs, or PDFs. It returns full text for native Google files. Do **not** use `get_presentation` (metadata only) or `get_doc_content` for speed — one tool for all content.
 
+**Multi-tab documents:** Google Docs can have **multiple tabs**. `get_drive_file_content` may only return content from the default tab. After fetching a document, call **`inspect_doc_structure`** to check whether additional tabs exist. If tabs are present, call `inspect_doc_structure` with each `tab_id` to retrieve content from every tab. Do not assume a document's entire content is in a single tab — always verify.
+
 **Required parameter:** Every tool needs **`user_google_email`**. Use the email the MCP is configured with (e.g. from the project's `.cursor/mcp.json` or env); if unknown, ask the user once.
 
 **Limit fetches:** After search, call `get_drive_file_content` for **only the 2–4 most relevant** results (match titles to the query). Do not fetch every result.
@@ -36,6 +38,7 @@ Apply this skill when the user:
 |------|------|------------|
 | Find reports | `search_drive_files` | `user_google_email`, `query`: `'1yW2GbqKThAskAAKA1UodTWqMzWZbVBo1' in parents and (fullText contains '…')` with terms from the user's question. `page_size`: 20–25. |
 | Get full text (Slides, Docs, PDF) | `get_drive_file_content` | `user_google_email`, `file_id` (from search results). Use for the 2–4 most relevant file IDs only. |
+| Check for document tabs | `inspect_doc_structure` | `user_google_email`, `document_id`. Call after `get_drive_file_content` for Google Docs to discover additional tabs. If tabs exist, call again with each `tab_id` to get per-tab content. |
 
 ## How to Fulfill a Request
 
@@ -48,13 +51,16 @@ Apply this skill when the user:
 3. **Retrieve content**  
    Call **`get_drive_file_content`** with `user_google_email` and the **file_id** for the **2–4 most relevant** hits only (prioritize by title match to the query). Use this single tool for Slides, Docs, and PDFs — it returns full text. Do not call `get_presentation` or `get_doc_content`.
 
-4. **Present the retrieved data directly**  
+4. **Check for multi-tab documents**  
+   For each Google Doc retrieved, call **`inspect_doc_structure`** (with `user_google_email` and `document_id`) to check whether the document has **multiple tabs**. If additional tabs exist, call `inspect_doc_structure` with each `tab_id` to retrieve content from every tab. Research findings are often spread across tabs — skipping tabs means missing data.
+
+5. **Present the retrieved data directly**  
    - **Do not synthesize, interpret, or editorialize.** Present findings exactly as they appear in the source material. Archie's role is strictly to retrieve and relay data — never to add its own analysis, conclusions, or narrative connections.
    - Present UX research from the Context Folder, quoting or paraphrasing the source content faithfully.
    - Cite specific decks/docs (and slide/section if useful), each with a **direct Google Drive or Docs/Slides link** built from the file ID.
    - If nothing relevant is found, say so and suggest refining the question or scope.
 
-5. **Follow Archie's behavior guidelines**  
+6. **Follow Archie's behavior guidelines**  
    Apply the tone, structure, and constraints in [INSTRUCTIONS.md](INSTRUCTIONS.md). **Every response must include:** (1) a **Tracing** section, (2) **clickable links on every citation** in the answer body, (3) the **reference links** (feedback form + guidelines doc), and (4) a brief **limitations disclaimer** as the **final** lines—**after** those links—stating that Archie **has not synthesized any research data** and is solely responsible for pulling data from past UX research reports, that Archie is AI and may hallucinate or err, urging verification of cited sources, and hedging about how many documents were used and that search may miss relevant material. **No exceptions.**
 
 ## Answer Quality
