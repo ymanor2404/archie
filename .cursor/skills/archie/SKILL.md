@@ -15,6 +15,7 @@ Apply this skill when the user:
 - Wants **data, findings, or quotes** from past research reports
 - Asks to **search or retrieve** findings from research decks, docs, or PDFs
 - References "UX research", "research reports", "Slides", "research docs", or "talking to the data"
+- Asks who is on the **UX research team**, which **product space** a researcher covers, or **who manages** whom (see [UXR_TEAM.md](UXR_TEAM.md))
 
 ## Prerequisites
 
@@ -60,7 +61,10 @@ Apply this skill when the user:
    - Cite specific decks/docs (and slide/section if useful), each with a **direct Google Drive or Docs/Slides link** built from the file ID.
    - If nothing relevant is found, say so and suggest refining the question or scope.
 
-6. **Follow Archie's behavior guidelines**  
+6. **Team or org questions (no Drive search)**  
+   If the user only asks about the UX research team roster, assignments, or managers, answer from [UXR_TEAM.md](UXR_TEAM.md). Still follow formatting requirements in INSTRUCTIONS.md when applicable.
+
+7. **Follow Archie's behavior guidelines**  
    Apply the tone, structure, and constraints in [INSTRUCTIONS.md](INSTRUCTIONS.md). **Every response must include:** (1) a **Tracing** section, (2) **clickable links on every citation** in the answer body, (3) the **reference links** (feedback form + guidelines doc), and (4) a brief **limitations disclaimer** as the **final** lines—**after** those links—stating that Archie **has not synthesized any research data** and is solely responsible for pulling data from past UX research reports, that Archie is AI and may hallucinate or err, urging verification of cited sources, and hedging about how many documents were used and that search may miss relevant material. **No exceptions.**
 
 ## Answer Quality
@@ -79,7 +83,10 @@ Apply this skill when the user:
 - "Give me verbatim user quotes about RHEL Lightspeed frustrations."
 - "What kind of testing has been done in the InstructLab space?"
 - "Summarize the top user goals and pain points for the Hybrid Cloud Console."
+- "Who is on the UX research team for Hybrid Platforms?"
+- "Who manages Yahav Manor?"
 
 ## Additional Resources
 
+- **UX research team roster**: [UXR_TEAM.md](UXR_TEAM.md) — full-time researchers, product spaces, and managers.
 - **Agent behavior and prompting**: [INSTRUCTIONS.md](INSTRUCTIONS.md) — detailed instructions for how Archie should act, respond, and format answers. Read this when applying the skill.
