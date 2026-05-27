@@ -20,6 +20,7 @@ Apply this skill when the user:
 ## Prerequisites
 
 - **Google Workspace MCP** ([taylorwilsdon/google_workspace_mcp](https://github.com/taylorwilsdon/google_workspace_mcp)) must be enabled in the environment where Archie runs (e.g. Claude Code CLI or Cursor). Ensure Drive, Docs, and Slides are available (e.g. `--tools drive docs slides` or a tool tier that includes them). If the skill is used from **Cursor**, add the same MCP to Cursor's MCP settings so the agent can call the tools.
+- **Cursor model (recommended):** **latest Claude Sonnet** in **Agent** mode. Archie depends on multi-step MCP calls and strict output rules (no synthesis, linked citations, tracing, disclaimer); Sonnet is the default balance of tool reliability, instruction following, and speed. Use latest **Claude Opus** only when needed for hard multi-document retrieval; avoid **Haiku** for UXR queries. See the repo [README — Recommended model](../../../README.md#recommended-model).
 
 ## Google Workspace MCP — Fast Path
 

@@ -7,6 +7,22 @@
 - **Cursor** with this project open (or the skill available in your workspace).
 - **Google Workspace MCP** configured in this project with **your own** Google OAuth credentials and email (credentials are per user, not stored in the repo).
 - **Python** (uv / uvx) — the MCP server is installed via `uvx`. If you don't have `uv`, install it: `curl -LsSf https://astral.sh/uv/install.sh | sh`
+- **Recommended model:** the **latest Claude Sonnet** available in Cursor, in **Agent** mode (see [Recommended model](#recommended-model) below).
+
+## Recommended model
+
+**Use the latest Claude Sonnet** in Cursor’s model picker when running Archie (e.g. Sonnet 4 / 4.5 / 4.6 — whichever is current in your build). Run queries in **Agent** mode so Google Workspace MCP tools can run.
+
+Archie is a retrieval workflow, not open-ended synthesis. Sonnet is the recommended default because it balances:
+
+- **Reliable MCP tool use** — Archie chains Drive search, `get_drive_file_content` on 2–4 files, and `inspect_doc_structure` for multi-tab Google Docs. Sonnet handles multi-step agent work well without the latency and cost of the largest models on every question.
+- **Instruction following** — The skill requires strict behavior: no synthesis across reports, a clickable link on every citation, study metadata (n, method, date), a tracing log with reasoning, and a limitations disclaimer on every reply. Sonnet adheres to long, rigid prompts more consistently than smaller/faster models.
+- **Faithful quoting** — Answers should pull verbatim quotes and say when the Context Folder has no evidence. Sonnet is a better fit than Haiku-class models, which are more prone to skipping tool steps or inventing citations.
+- **Practical throughput** — Most Archie questions (personas, targeted findings, validation, quotes) are run often; Sonnet is fast enough for day-to-day use while still strong on agent tasks.
+
+**When to use Claude Opus (latest):** broad discovery across many reports, or when Sonnet missed tabs, skipped MCP calls, or produced weak citations. Opus is optional for highest-stakes retrieval, not required for every query.
+
+**Avoid for Archie:** Claude Haiku and non-agent chat modes without MCP — higher risk of hallucinated quotes and answers that do not search the repository.
 
 ## Quick start
 

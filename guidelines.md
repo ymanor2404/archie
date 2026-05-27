@@ -10,7 +10,21 @@ Archie connects to a single data source through its MCP (Model Context Protocol)
 
 **Archie does not synthesize, interpret, or editorialize.** It retrieves data from UX research reports and presents it exactly as it appears in the source material. It does not draw cross-document conclusions, create narrative threads, identify themes across reports, or offer its own analysis. It does not have access to product analytics, Jira, competitive analysis tools, supplementary marketing or support documents, or the web.
 
-To get started with Archie, clone the [archie2 repo](https://github.com/RedHatInsights/archie2) and follow the setup instructions in the repo's [README](README.md) and [.cursor/README.md](.cursor/README.md). You will need Cursor with the Google Workspace MCP configured using your own Google OAuth credentials. If you have questions about setup, please contact Yahav Manor on Slack or via email ([ymanor@redhat.com](mailto:ymanor@redhat.com)).
+To get started with Archie, clone the [archie repo](https://github.com/ymanor2404/archie) and follow the setup instructions in the repo's [README](README.md) and [.cursor/README.md](.cursor/README.md). You will need Cursor with the Google Workspace MCP configured using your own Google OAuth credentials. If you have questions about setup, please contact Yahav Manor on Slack or via email ([ymanor@redhat.com](mailto:ymanor@redhat.com)).
+
+**1.1 Recommended model (Cursor)**
+
+**Use the latest Claude Sonnet** in Cursor, in **Agent** mode, for Archie queries. Pick whichever Sonnet version is newest in your model list (e.g. Sonnet 4 / 4.5 / 4.6).
+
+**Why Sonnet**
+
+- **MCP tool chains:** Archie searches Drive, reads 2–4 relevant files, and checks Google Docs for extra tabs. Sonnet runs multi-step agent + MCP workflows reliably for day-to-day use.
+- **Skill compliance:** Archie must not synthesize across reports; every citation needs a link; every answer needs a tracing log and limitations disclaimer. Sonnet follows these constraints better than smaller models.
+- **Grounded answers:** Verbatim quotes and honest “no research found” responses matter more than creative prose. Sonnet is less likely than Haiku to invent quotes or skip the repository search.
+
+**When to use Claude Opus (latest):** optional for very broad questions across many reports, or if a Sonnet run skipped tools, missed Doc tabs, or had citation problems.
+
+**Avoid:** Claude Haiku for research retrieval; Ask-only or chat without MCP (Archie cannot search the Context Folder without tools).
 
 **2 What Archie Knows (In-Scope Topics)**  
 Users are encouraged to ask any question related to UX research at Red Hat, regardless of whether they know if specific documentation exists in the research repository folder. Archie searches the UX research team's research readouts/reports as its sole source of truth. If no relevant reports are found, Archie will say so honestly rather than speculate or pull from other sources.

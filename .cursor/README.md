@@ -12,7 +12,21 @@ If you already have **Google Workspace MCP** set up in Cursor (for example in yo
 2. **Your Google email is available** — Archie passes `user_google_email` on every MCP call. The email should be set via the `USER_GOOGLE_EMAIL` environment variable in your MCP config or shell profile.
 3. **The MCP appears in Cursor** — open **Cursor Settings → Tools & MCP** and confirm the Google Workspace server is listed and enabled for this project.
 
-If all three are true, you're ready — skip to [First run](#4-first-run) below.
+If all three are true, you're ready — skip to [Recommended model](#recommended-model), then [First run](#5-first-run) below.
+
+---
+
+## Recommended model
+
+In Cursor chat, select the **latest Claude Sonnet** model and use **Agent** mode (not Ask-only) so Archie can call Google Workspace MCP.
+
+| Choice | Guidance |
+|--------|----------|
+| **Default** | Latest **Claude Sonnet** — best balance of MCP reliability, instruction following (citations, tracing, no synthesis), and speed for routine UXR queries. |
+| **Optional upgrade** | Latest **Claude Opus** — use for broad multi-report questions or if Sonnet skipped tools, missed Doc tabs, or produced weak citations. |
+| **Avoid** | **Claude Haiku** — more likely to skip MCP steps or hallucinate quotes; **chat without MCP** — will not search the Context Folder. |
+
+More detail is in the repo [README — Recommended model](../README.md#recommended-model).
 
 ---
 
@@ -104,6 +118,8 @@ Your `.cursor/mcp.json` should look like this when done:
 - **Fully quit and restart Cursor** so it picks up the new config.
 
 ### 5. First run
+
+Set the model to **latest Claude Sonnet** and **Agent** mode (see [Recommended model](#recommended-model)).
 
 The first time you use Archie (e.g. ask a question about UX research), the MCP may open a browser window so you can sign in with the Google account you set as `USER_GOOGLE_EMAIL` and grant access. This OAuth consent happens once per machine.
 
