@@ -32,13 +32,15 @@ Apply this skill when the user:
 
 **Required parameter:** Every tool needs **`user_google_email`**. Use the email the MCP is configured with (e.g. from the project's `.cursor/mcp.json` or env); if unknown, ask the user once.
 
-**Limit fetches:** After search, call `get_drive_file_content` for **only the 2–4 most relevant** results (match titles to the query). Do not fetch every result.
+**Limit fetches:** After search, call `get_drive_file_content` for **only the 2–4 most relevant** results (match titles to the query, **newest first** among ties). Do not fetch every result.
+
+**Recency:** For current workflows or product-behavior questions, bias search toward files modified in the last **18 months** (`modifiedTime >= 'YYYY-MM-DD'`). See [INSTRUCTIONS.md](INSTRUCTIONS.md) — **Chronological and source relevancy**. Optional local index: `python scripts/index_retriever.py [keywords] --json` (requires `GOOGLE_SERVICE_ACCOUNT_KEY`).
 
 ## Tools to Use
 
 | Goal | Tool | Parameters |
 |------|------|------------|
-| Find reports | `search_drive_files` | `user_google_email`, `query`: `'1yW2GbqKThAskAAKA1UodTWqMzWZbVBo1' in parents and (fullText contains '…')` with terms from the user's question. `page_size`: 20–25. |
+| Find reports | `search_drive_files` | `user_google_email`, `query`: `'1yW2GbqKThAskAAKA1UodTWqMzWZbVBo1' in parents and (fullText contains '…')` with terms from the user's question. For **current** product/workflow questions, add `and modifiedTime >= 'YYYY-MM-DD'` (18 months ago). `page_size`: 20–25. Rank by recency + title match before fetching. |
 | Get full text (Slides, Docs, PDF) | `get_drive_file_content` | `user_google_email`, `file_id` (from search results). Use for the 2–4 most relevant file IDs only. |
 | Check for document tabs | `inspect_doc_structure` | `user_google_email`, `document_id`. Call after `get_drive_file_content` for Google Docs to discover additional tabs. If tabs exist, call again with each `tab_id` to get per-tab content. |
 
@@ -48,10 +50,10 @@ Apply this skill when the user:
    Identify the topic, persona, or artifact type (e.g. "AI engineers", "enterprise users", "research from 2024"). If the question is ambiguous, ask clarifying questions (max 3).
 
 2. **Find relevant artifacts**  
-   Call **`search_drive_files`** scoped to **Archie's Context Folder** (ID: `1yW2GbqKThAskAAKA1UodTWqMzWZbVBo1`). Use query terms from the user's question (personas, topics, features) and/or `mimeType` for Slides/Docs.
+   Call **`search_drive_files`** scoped to **Archie's Context Folder** (ID: `1yW2GbqKThAskAAKA1UodTWqMzWZbVBo1`). Use query terms from the user's question. For **current** product or active-workflow questions, prefer files from the last **12–18 months** (see INSTRUCTIONS.md). Widen the date filter only if the first pass lacks relevant hits.
 
 3. **Retrieve content**  
-   Call **`get_drive_file_content`** with `user_google_email` and the **file_id** for the **2–4 most relevant** hits only (prioritize by title match to the query). Use this single tool for Slides, Docs, and PDFs — it returns full text. Do not call `get_presentation` or `get_doc_content`.
+   Call **`get_drive_file_content`** for the **2–4** hits with the best **topic match and recency** (newest priority-tier files first). Use this single tool for Slides, Docs, and PDFs. If any cited study is **≥ 24 months** old, add the legacy warning under that study’s findings (INSTRUCTIONS.md).
 
 4. **Check for multi-tab documents**  
    For each Google Doc retrieved, call **`inspect_doc_structure`** (with `user_google_email` and `document_id`) to check whether the document has **multiple tabs**. If additional tabs exist, call `inspect_doc_structure` with each `tab_id` to retrieve content from every tab. Research findings are often spread across tabs — skipping tabs means missing data.

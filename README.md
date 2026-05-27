@@ -16,7 +16,7 @@
 Archie is a retrieval workflow, not open-ended synthesis. Sonnet is the recommended default because it balances:
 
 - **Reliable MCP tool use** — Archie chains Drive search, `get_drive_file_content` on 2–4 files, and `inspect_doc_structure` for multi-tab Google Docs. Sonnet handles multi-step agent work well without the latency and cost of the largest models on every question.
-- **Instruction following** — The skill requires strict behavior: no synthesis across reports, source citation schema (product-area header + authors per study), a clickable link on every citation, study metadata (n, method, date), uniform formatting (tables or bullets, not mixed), a tracing log with reasoning, and a limitations disclaimer on every reply. Sonnet adheres to long, rigid prompts more consistently than smaller/faster models.
+- **Instruction following** — The skill requires strict behavior: no synthesis across reports, source citation schema (product-area header + authors per study), recency-aware retrieval (prefer 12–18 month studies; legacy warnings for ≥24 month sources), a clickable link on every citation, study metadata (n, method, date), uniform formatting (tables or bullets, not mixed), a tracing log with reasoning, and a limitations disclaimer on every reply. Sonnet adheres to long, rigid prompts more consistently than smaller/faster models.
 - **Faithful quoting** — Answers should pull verbatim quotes and say when the Context Folder has no evidence. Sonnet is a better fit than Haiku-class models, which are more prone to skipping tool steps or inventing citations.
 - **Practical throughput** — Most Archie questions (personas, targeted findings, validation, quotes) are run often; Sonnet is fast enough for day-to-day use while still strong on agent tasks.
 
@@ -47,7 +47,7 @@ Archie is a retrieval workflow, not open-ended synthesis. Sonnet is the recommen
 | `.cursor/mcp.json.example` | Example MCP config; copy to `mcp.json` and add your credentials. |
 | `.cursor/README.md` | **First-time setup guide** — MCP config, OAuth, and enabling the skill. |
 | `eval/` | **Eval:** 14 prompts and rubric to assess answer quality and retrieval. |
-| `scripts/` | `sync_reports.py` — weekly report-sync script (see Automated report sync below). |
+| `scripts/` | `sync_reports.py` (weekly report sync), `index_retriever.py` (recency-weighted Drive index for ranking). |
 | `.github/workflows/` | GitHub Actions workflow for the automated report sync. |
 
 The file `.cursor/mcp.json` is gitignored so your credentials are never committed.
@@ -66,7 +66,12 @@ A weekly GitHub Actions pipeline scans the [UXD Research Engagements spreadsheet
 
 ### Related scripts
 
-The Python scripts in this repo are related to this pipeline for uploading past UX research reports to Archie's context folder. For those using Archie for simply research data querying purposes, you can ignore these scripts.
+| Script | Purpose |
+|--------|---------|
+| `sync_reports.py` | Copy new reports from the engagements spreadsheet into the Context Folder. |
+| `index_retriever.py` | List and rank Context Folder files by **age-weighting** (priority: last 18 months; legacy: ≥24 months). Use `python scripts/index_retriever.py [keywords] --json` with `GOOGLE_SERVICE_ACCOUNT_KEY` set. Add `--query-hint` for a suggested `modifiedTime` Drive search clause. |
+
+For day-to-day Archie queries in Cursor, MCP search applies the same recency rules in [INSTRUCTIONS.md](.cursor/skills/archie/INSTRUCTIONS.md); the index script is optional for local ranking or CI.
 
 
 ## Feedback and guidelines

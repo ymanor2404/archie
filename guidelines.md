@@ -85,6 +85,8 @@ The best way to interact with Archie is to ask specific questions about research
 
 **Study metadata (source citation schema):** For each study, Archie labels findings with a standard header — `### [Product Area Name] Title of Study (Year)` — and an `Author(s):` line directly below it, so you can see portfolio scope and who to contact before reading insights. Findings always appear under that block, never without it.
 
+**Recency:** For questions about current product behavior or active workflows, Archie prioritizes research from roughly the **last 12–18 months**. If it must cite a study **older than 24 months**, you will see an explicit note under that study’s findings that the insight may be outdated.
+
 Unlike other AI tools, Archie is required to "show its work."  
 Every time Archie provides an answer, it will include a Tracing Log at the bottom of the response. This log will list:
 
