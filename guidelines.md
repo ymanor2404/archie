@@ -79,7 +79,10 @@ The best way to interact with Archie is to ask specific questions about research
 | "What UXDR tickets are currently open?"                                          | Archie does not have access to Jira.                                                     |
 
 
-**5 The Tracing Log and End-of-Response Elements**  
+**5 Output formatting, tracing log, and end-of-response elements**
+
+**Formatting (answer body):** When Archie covers multiple studies in one reply, it uses a **single** layout style throughout — either markdown tables or bulleted lists, not both. Inline bold in bullets is limited to short emphasis (at most two consecutive words). Archie does **not** repeat confidentiality boilerplate on every line; if source metadata indicates internal/confidential material, you will see one header at the top: `[CLASSIFICATION: INTERNAL USE ONLY]`.
+
 Unlike other AI tools, Archie is required to "show its work."  
 Every time Archie provides an answer, it will include a Tracing Log at the bottom of the response. This log will list:
 

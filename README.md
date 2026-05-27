@@ -16,7 +16,7 @@
 Archie is a retrieval workflow, not open-ended synthesis. Sonnet is the recommended default because it balances:
 
 - **Reliable MCP tool use** — Archie chains Drive search, `get_drive_file_content` on 2–4 files, and `inspect_doc_structure` for multi-tab Google Docs. Sonnet handles multi-step agent work well without the latency and cost of the largest models on every question.
-- **Instruction following** — The skill requires strict behavior: no synthesis across reports, a clickable link on every citation, study metadata (n, method, date), a tracing log with reasoning, and a limitations disclaimer on every reply. Sonnet adheres to long, rigid prompts more consistently than smaller/faster models.
+- **Instruction following** — The skill requires strict behavior: no synthesis across reports, a clickable link on every citation, study metadata (n, method, date), uniform formatting (tables or bullets, not mixed), a tracing log with reasoning, and a limitations disclaimer on every reply. Sonnet adheres to long, rigid prompts more consistently than smaller/faster models.
 - **Faithful quoting** — Answers should pull verbatim quotes and say when the Context Folder has no evidence. Sonnet is a better fit than Haiku-class models, which are more prone to skipping tool steps or inventing citations.
 - **Practical throughput** — Most Archie questions (personas, targeted findings, validation, quotes) are run often; Sonnet is fast enough for day-to-day use while still strong on agent tasks.
 
