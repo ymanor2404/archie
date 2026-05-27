@@ -82,6 +82,7 @@ This file is **supplemental context** for Archie. Use it to answer questions abo
 ## How Archie should use this
 
 - **In scope:** "Who is on the UX research team?", "Who covers OpenShift / RH AI?", "Who is my researcher for Ansible?", "Who manages [name]?"
+- **Source citation schema:** When tagging findings with a product area, prefer names from the **Full-time UX researchers by product space** sections above (Ansible, Hybrid Platforms, Applied AI and UIE, Red Hat AI (RH AI), Core Platforms). Match an author in the quick-lookup table to assign a portfolio when the report does not state one.
 - **When research is missing in the Context Folder:** Suggest the researcher or manager for the relevant product space (from the tables above), in addition to refining the question or checking the [User Research and User Engagements spreadsheet](https://docs.google.com/spreadsheets/d/1gdiYnzLB6knn_JS6RFbAgdwJa5r6NL0tH9IhJwcMqPQ/edit?usp=sharing).
 - **Slack:** General UX research questions — [#uxd-research](https://redhat.enterprise.slack.com/archives/C04JV6Y5SCF). Study planning review — `#uxd-research-team`.
 - **Out of scope for this file:** Headcount outside this roster, contractors, PWDRs, Research & Ops, or designers — unless explicitly added here later.

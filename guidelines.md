@@ -83,6 +83,8 @@ The best way to interact with Archie is to ask specific questions about research
 
 **Formatting (answer body):** When Archie covers multiple studies in one reply, it uses a **single** layout style throughout — either markdown tables or bulleted lists, not both. Inline bold in bullets is limited to short emphasis (at most two consecutive words). Archie does **not** repeat confidentiality boilerplate on every line; if source metadata indicates internal/confidential material, you will see one header at the top: `[CLASSIFICATION: INTERNAL USE ONLY]`.
 
+**Study metadata (source citation schema):** For each study, Archie labels findings with a standard header — `### [Product Area Name] Title of Study (Year)` — and an `Author(s):` line directly below it, so you can see portfolio scope and who to contact before reading insights. Findings always appear under that block, never without it.
+
 Unlike other AI tools, Archie is required to "show its work."  
 Every time Archie provides an answer, it will include a Tracing Log at the bottom of the response. This log will list:
 
