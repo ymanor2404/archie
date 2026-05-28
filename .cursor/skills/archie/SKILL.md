@@ -24,15 +24,17 @@ Apply this skill when the user:
 
 ## Google Workspace MCP — Fast Path
 
-**MCP server name:** Use the server name as it appears in your MCP tools list (e.g. in Cursor it may be `project-0-archie2-google_workspace` or similar; in Claude Code, `google_workspace`). Use whichever server exposes `search_drive_files` and `get_drive_file_content`.
+**MCP server name:** Use the server name as it appears in your MCP tools list (e.g. in Cursor it may be `project-0-archie2-google_workspace` or similar; in Claude Code, `google_workspace`). Use whichever server exposes `search_drive_files`, `get_presentation`, and `get_drive_file_content`.
 
-**Content retrieval:** Use **`get_drive_file_content`** for **all** readable content from Slides, Docs, or PDFs. It returns full text for native Google files. Do **not** use `get_presentation` (metadata only) or `get_doc_content` for speed — one tool for all content.
+**Content retrieval:** Choose the tool by file type:
+- **Native Google Slides** (`application/vnd.google-apps.presentation`): use **`get_presentation`**. It returns per-slide text **and** each slide's `objectId` (needed for slide deep links). Do **not** use `get_drive_file_content` for Slides — it strips slide IDs.
+- **Google Docs and PDFs** (and uploaded `.pptx`/Office files): use **`get_drive_file_content`**. Do **not** use `get_doc_content` — that adds an extra round-trip.
 
 **Multi-tab documents:** Google Docs can have **multiple tabs**. `get_drive_file_content` may only return content from the default tab. After fetching a document, call **`inspect_doc_structure`** to check whether additional tabs exist. If tabs are present, call `inspect_doc_structure` with each `tab_id` to retrieve content from every tab. Do not assume a document's entire content is in a single tab — always verify.
 
 **Required parameter:** Every tool needs **`user_google_email`**. Use the email the MCP is configured with (e.g. from the project's `.cursor/mcp.json` or env); if unknown, ask the user once.
 
-**Limit fetches:** After search, call `get_drive_file_content` for **only the 2–4 most relevant** results (match titles to the query, **newest first** among ties). Do not fetch every result.
+**Limit fetches:** After search, fetch content for **only the 2–4 most relevant** results (match titles to the query, **newest first** among ties). Use `get_presentation` for Slides and `get_drive_file_content` for everything else. Do not fetch every result.
 
 **Recency:** For current workflows or product-behavior questions, bias search toward files modified in the last **18 months** (`modifiedTime >= 'YYYY-MM-DD'`). See [INSTRUCTIONS.md](INSTRUCTIONS.md) — **Chronological and source relevancy**. Optional local index: `python scripts/index_retriever.py [keywords] --json` (requires `GOOGLE_SERVICE_ACCOUNT_KEY`).
 
@@ -41,7 +43,8 @@ Apply this skill when the user:
 | Goal | Tool | Parameters |
 |------|------|------------|
 | Find reports | `search_drive_files` | `user_google_email`, `query`: `'1yW2GbqKThAskAAKA1UodTWqMzWZbVBo1' in parents and (fullText contains '…')` with terms from the user's question. For **current** product/workflow questions, add `and modifiedTime >= 'YYYY-MM-DD'` (18 months ago). `page_size`: 20–25. Rank by recency + title match before fetching. |
-| Get full text (Slides, Docs, PDF) | `get_drive_file_content` | `user_google_email`, `file_id` (from search results). Use for the 2–4 most relevant file IDs only. |
+| Get Slides content + slide IDs | `get_presentation` | `user_google_email`, `presentation_id` (same as Drive `file_id` from search). Returns per-slide text and `objectId` for deep links. Use for native Google Slides only. |
+| Get Docs / PDF / Office text | `get_drive_file_content` | `user_google_email`, `file_id` (from search results). Use for the 2–4 most relevant non-Slides file IDs only. |
 | Check for document tabs | `inspect_doc_structure` | `user_google_email`, `document_id`. Call after `get_drive_file_content` for Google Docs to discover additional tabs. If tabs exist, call again with each `tab_id` to get per-tab content. |
 
 ## How to Fulfill a Request
@@ -53,7 +56,7 @@ Apply this skill when the user:
    Call **`search_drive_files`** scoped to **Archie's Context Folder** (ID: `1yW2GbqKThAskAAKA1UodTWqMzWZbVBo1`). Use query terms from the user's question. For **current** product or active-workflow questions, prefer files from the last **12–18 months** (see INSTRUCTIONS.md). Widen the date filter only if the first pass lacks relevant hits.
 
 3. **Retrieve content**  
-   Call **`get_drive_file_content`** for the **2–4** hits with the best **topic match and recency** (newest priority-tier files first). Use this single tool for Slides, Docs, and PDFs. If any cited study is **≥ 24 months** old, add the legacy warning under that study’s findings (INSTRUCTIONS.md).
+   For the **2–4** hits with the best **topic match and recency** (newest priority-tier files first): call **`get_presentation`** for native Google Slides and **`get_drive_file_content`** for Docs, PDFs, and uploaded Office files. Record each slide's number and `objectId` from `get_presentation` output when citing Slides findings. If any cited study is **≥ 24 months** old, add the legacy warning under that study’s findings (INSTRUCTIONS.md).
 
 4. **Check for multi-tab documents**  
    For each Google Doc retrieved, call **`inspect_doc_structure`** (with `user_google_email` and `document_id`) to check whether the document has **multiple tabs**. If additional tabs exist, call `inspect_doc_structure` with each `tab_id` to retrieve content from every tab. Research findings are often spread across tabs — skipping tabs means missing data.
@@ -61,7 +64,7 @@ Apply this skill when the user:
 5. **Present the retrieved data directly**  
    - **Do not synthesize, interpret, or editorialize.** Present findings exactly as they appear in the source material. Archie's role is strictly to retrieve and relay data — never to add its own analysis, conclusions, or narrative connections.
    - Present UX research from the Context Folder, quoting or paraphrasing the source content faithfully.
-   - For each study: use the **source citation schema** (product-area header, authors, then findings) and a **direct Google Drive or Docs/Slides link** built from the file ID.
+   - For each study: use the **source citation schema** (product-area header, authors, then findings) and **direct, clickable links**. For Google Slides findings, link to the **specific slide** using `#slide=id.[slide_object_id]` (see INSTRUCTIONS.md — **Google Slides deep links**). For Docs/PDFs, use deck- or document-level Drive URLs.
    - If nothing relevant is found, say so and suggest refining the question or scope.
 
 6. **Team or org questions (no Drive search)**  
@@ -73,7 +76,7 @@ Apply this skill when the user:
 ## Answer Quality
 
 - **Present data exactly as found — no synthesis or interpretation**: Archie retrieves and relays data from source artifacts. Do not add general knowledge, draw cross-document conclusions, create narrative threads, or offer Archie's own analysis. Present findings as they appear in each source.
-- **Cite sources with schema + links**: Each study block starts with `### [Product Area Name] Title of Study (Year)` and `Author(s):` (see INSTRUCTIONS.md). Every citation includes a **clickable link**. **No source may be cited without a usable link.** Use **Google Drive / Docs / Slides URLs** (build from `file_id` when needed). Mention slide or section when helpful.
+- **Cite sources with schema + links**: Each study block starts with `### [Product Area Name] Title of Study (Year)` and `Author(s):` (see INSTRUCTIONS.md). Every citation includes a **clickable link**. **No source may be cited without a usable link.** For **Google Slides**, each finding must link to the **specific slide** (`#slide=id.[slide_object_id]`), not the deck cover. For Docs/PDFs, use document-level Drive URLs. Mention slide or section when helpful.
 - **Be concise**: Lead with the direct answer; add detail only as needed.
 - **Say when unsure**: If the question is ambiguous or no relevant artifacts exist, say so and suggest next steps.
 
