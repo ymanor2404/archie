@@ -16,6 +16,29 @@ If all three are true, you're ready — skip to [Recommended model](#recommended
 
 ---
 
+## Optional: Dataverse MCP (live UX research team roster)
+
+Archie can answer "who is on the UX research team?" from **live org data** via Red Hat's Dataverse MCP (RoverPeople). Without it, Archie uses a static roster in `UXR_TEAM.md` and warns that it may be less current.
+
+1. Open **Cursor Settings → Tools & MCP**.
+2. Add the Dataverse server (user-level `~/.cursor/mcp.json` or project config):
+
+```json
+{
+  "mcpServers": {
+    "dataverse": {
+      "url": "https://mcp.dataverse.redhat.com/mcp/"
+    }
+  }
+}
+```
+
+3. Restart Cursor. The first team query may prompt Snowflake OAuth sign-in.
+
+See [DATAVERSE_UXR.md](skills/archie/DATAVERSE_UXR.md) for how Archie scopes the team (Leslie Hinson + full reporting chain).
+
+---
+
 ## Recommended model
 
 In Cursor chat, select the **latest Claude Sonnet** model and use **Agent** mode (not Ask-only) so Archie can call Google Workspace MCP.
@@ -86,7 +109,7 @@ Edit `.cursor/mcp.json` and replace the placeholders with **your** values:
 | `YOUR_GOOGLE_OAUTH_CLIENT_SECRET` | Your Google OAuth 2.0 Client Secret (from step 1) |
 | `your.email@example.com` | Your Google account email (the account you use to access Google Drive) |
 
-Your `.cursor/mcp.json` should look like this when done:
+Your `.cursor/mcp.json` should look like this when done (the `dataverse` block is **optional** — see [Optional: Dataverse MCP](#optional-dataverse-mcp-live-ux-research-team-roster)):
 
 ```json
 {
@@ -105,6 +128,9 @@ Your `.cursor/mcp.json` should look like this when done:
         "GOOGLE_OAUTH_CLIENT_SECRET": "GOCSPX-your-secret-here",
         "USER_GOOGLE_EMAIL": "you@example.com"
       }
+    },
+    "dataverse": {
+      "url": "https://mcp.dataverse.redhat.com/mcp/"
     }
   }
 }
