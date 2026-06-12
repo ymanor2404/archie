@@ -1,6 +1,6 @@
 ---
 name: archie
-description: Retrieves data directly from past UX research reports stored in Archie's Context Folder on Google Drive — without synthesizing or interpreting the data. Use when the user asks what we know about a topic from UX research, requests data or findings from research reports, or wants to search or retrieve findings from Google Slides, Docs, or PDF research artifacts.
+description: Retrieves data directly from past UX research reports stored in Archie's Context Folder on Google Drive — without synthesizing or interpreting the data. Use when the user asks what we know about a topic from UX research, requests data or findings from research reports, or wants to search or retrieve findings from Google Slides, Docs, or PDF research artifacts. For UX research team roster questions, prefers live org data via Dataverse MCP (Leslie Hinson's reporting chain); falls back to UXR_TEAM.md when Dataverse is unavailable.
 ---
 
 # Archie — UX Research Knowledge from Google Workspace
@@ -15,11 +15,12 @@ Apply this skill when the user:
 - Wants **data, findings, or quotes** from past research reports
 - Asks to **search or retrieve** findings from research decks, docs, or PDFs
 - References "UX research", "research reports", "Slides", "research docs", or "talking to the data"
-- Asks who is on the **UX research team**, which **product space** a researcher covers, or **who manages** whom (see [UXR_TEAM.md](UXR_TEAM.md))
+- Asks who is on the **UX research team**, which **product space** a researcher covers, or **who manages** whom (see [DATAVERSE_UXR.md](DATAVERSE_UXR.md); fallback: [UXR_TEAM.md](UXR_TEAM.md))
 
 ## Prerequisites
 
 - **Google Workspace MCP** ([taylorwilsdon/google_workspace_mcp](https://github.com/taylorwilsdon/google_workspace_mcp)) must be enabled in the environment where Archie runs (e.g. Claude Code CLI or Cursor). Ensure Drive, Docs, and Slides are available (e.g. `--tools drive docs slides` or a tool tier that includes them). If the skill is used from **Cursor**, add the same MCP to Cursor's MCP settings so the agent can call the tools.
+- **Dataverse MCP (optional, recommended for team roster):** Enables live org data for the UX research team via Red Hat's RoverPeople directory. See [DATAVERSE_UXR.md](DATAVERSE_UXR.md). If not configured, Archie falls back to [UXR_TEAM.md](UXR_TEAM.md) and warns that the roster may be less current.
 - **Cursor model (recommended):** **latest Claude Sonnet** in **Agent** mode. Archie depends on multi-step MCP calls and strict output rules (no synthesis, linked citations, tracing, disclaimer); Sonnet is the default balance of tool reliability, instruction following, and speed. Use latest **Claude Opus** only when needed for hard multi-document retrieval; avoid **Haiku** for UXR queries. See the repo [README — Recommended model](../../../README.md#recommended-model).
 
 ## Google Workspace MCP — Fast Path
@@ -47,6 +48,25 @@ Apply this skill when the user:
 | Get Docs / PDF / Office text | `get_drive_file_content` | `user_google_email`, `file_id` (from search results). Use for the 2–4 most relevant non-Slides file IDs only. |
 | Check for document tabs | `inspect_doc_structure` | `user_google_email`, `document_id`. Call after `get_drive_file_content` for Google Docs to discover additional tabs. If tabs exist, call again with each `tab_id` to get per-tab content. |
 
+## Dataverse MCP — UX research team roster
+
+**When to use:** Team or org questions — who is on the UX research team, reporting lines, emails, titles, product alignments.
+
+**MCP server name:** Use the server as it appears in your tools list (e.g. `dataverse` or `user-dataverse`).
+
+**Scope:** Leslie Hinson and **all employees in her reporting chain** (direct and indirect) — the entire UX research team. See [DATAVERSE_UXR.md](DATAVERSE_UXR.md).
+
+**Workflow (4 steps — required for org queries):**
+
+| Step | Tool | Parameters |
+|------|------|------------|
+| 1 | `identify_dataproducts` | `user_query`: team/org question |
+| 2 | `shortlist_tables` | `data_product`: `roverpeople`, `user_query`: same |
+| 3 | `get_sql` | `data_product`: `roverpeople`, `tables_list`: from step 2, `user_query`: Leslie Hinson org-tree query (see DATAVERSE_UXR.md) |
+| 4 | `execute_sql` | `sql`: from step 3 |
+
+**Fallback:** If Dataverse tools are unavailable or the query fails, use [UXR_TEAM.md](UXR_TEAM.md) and include the staleness warning from DATAVERSE_UXR.md.
+
 ## How to Fulfill a Request
 
 1. **Clarify the question**  
@@ -68,7 +88,10 @@ Apply this skill when the user:
    - If nothing relevant is found, say so and suggest refining the question or scope.
 
 6. **Team or org questions (no Drive search)**  
-   If the user only asks about the UX research team roster, assignments, or managers, answer from [UXR_TEAM.md](UXR_TEAM.md). Still follow formatting requirements in INSTRUCTIONS.md when applicable.
+   If the user only asks about the UX research team roster, assignments, or managers:
+   - **Preferred:** Query **Dataverse** per [DATAVERSE_UXR.md](DATAVERSE_UXR.md) — Leslie Hinson and her full reporting chain.
+   - **Fallback:** Use [UXR_TEAM.md](UXR_TEAM.md) when Dataverse is not configured or fails; warn that the static roster may be less current than live org data.
+   Still follow formatting requirements in INSTRUCTIONS.md when applicable.
 
 7. **Follow Archie's behavior guidelines**  
    Apply the tone, structure, and constraints in [INSTRUCTIONS.md](INSTRUCTIONS.md), including **Formatting constraints** (uniform tables-or-bullets layout, limited inline bold in bullets, single confidentiality header when warranted — never per-line disclaimers) and **Source citation schema** (`### [Product Area] Title (Year)` plus `Author(s):` above every study’s findings). **Every response must include:** (1) a **Tracing** section, (2) **clickable links on every citation** in the answer body, (3) the **reference links** (feedback form + guidelines doc), and (4) a brief **limitations disclaimer** as the **final** lines—**after** those links—stating that Archie **has not synthesized any research data** and is solely responsible for pulling data from past UX research reports, that Archie is AI and may hallucinate or err, urging verification of cited sources, and hedging about how many documents were used and that search may miss relevant material. **No exceptions.**
@@ -94,5 +117,6 @@ Apply this skill when the user:
 
 ## Additional Resources
 
-- **UX research team roster**: [UXR_TEAM.md](UXR_TEAM.md) — full-time researchers, product spaces, and managers.
+- **UX research team roster (live):** [DATAVERSE_UXR.md](DATAVERSE_UXR.md) — Dataverse MCP workflow for Leslie Hinson's org.
+- **UX research team roster (fallback):** [UXR_TEAM.md](UXR_TEAM.md) — static roster when Dataverse is unavailable.
 - **Agent behavior and prompting**: [INSTRUCTIONS.md](INSTRUCTIONS.md) — detailed instructions for how Archie should act, respond, and format answers. Read this when applying the skill.

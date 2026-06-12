@@ -6,6 +6,7 @@
 
 - **Cursor** with this project open (or the skill available in your workspace).
 - **Google Workspace MCP** configured in this project with **your own** Google OAuth credentials and email (credentials are per user, not stored in the repo).
+- **Dataverse MCP (optional):** For live UX research team roster data (reporting lines, emails, titles). Without it, Archie falls back to a static markdown roster that may be less current. See [`.cursor/skills/archie/DATAVERSE_UXR.md`](.cursor/skills/archie/DATAVERSE_UXR.md).
 - **Python** (uv / uvx) — the MCP server is installed via `uvx`. If you don't have `uv`, install it: `curl -LsSf https://astral.sh/uv/install.sh | sh`
 - **Recommended model:** the **latest Claude Sonnet** available in Cursor, in **Agent** mode (see [Recommended model](#recommended-model) below).
 
@@ -43,7 +44,7 @@ Archie is a retrieval workflow, not open-ended synthesis. Sonnet is the recommen
 
 | Path | Purpose |
 |------|--------|
-| `.cursor/skills/archie/` | Archie skill: `SKILL.md` (when/how to use, tools), `INSTRUCTIONS.md` (behavior, tone, tracing, references), `UXR_TEAM.md` (UX research team roster and product assignments). |
+| `.cursor/skills/archie/` | Archie skill: `SKILL.md` (when/how to use, tools), `INSTRUCTIONS.md` (behavior, tone, tracing, references), `DATAVERSE_UXR.md` (live team roster via Dataverse), `UXR_TEAM.md` (fallback static roster). |
 | `.cursor/mcp.json.example` | Example MCP config; copy to `mcp.json` and add your credentials. |
 | `.cursor/README.md` | **First-time setup guide** — MCP config, OAuth, and enabling the skill. |
 | `eval/` | **Eval:** 14 prompts and rubric to assess answer quality and retrieval. |
