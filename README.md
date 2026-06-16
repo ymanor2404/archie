@@ -78,7 +78,7 @@ For day-to-day Archie queries in Cursor, MCP search applies the same recency rul
 ## Feedback and guidelines
 
 - **Feedback on Archie:** [Share your feedback](https://forms.gle/zoHWJ1YcMNtkG1fX9)
-- **Archie guidelines / best practices:** [Guidelines doc](https://docs.google.com/document/d/1lr5gX9UPxwYz03sXitWWGOMI6LVgk4qd-whFdEzjNYQ/edit?tab=t.0)
+- **Archie guidelines / best practices:** [Guidelines doc](https://docs.google.com/document/d/1wPq_kw4BWvWxqLTKVTbip9evvUo5cwCqBl_Bh-TRywQ/edit?tab=t.kjgor4yq1ct7)
 
 ## License
 
