@@ -43,7 +43,7 @@ Apply this skill when the user:
 
 | Goal | Tool | Parameters |
 |------|------|------------|
-| Find reports | `search_drive_files` | `user_google_email`, `query`: `'1yW2GbqKThAskAAKA1UodTWqMzWZbVBo1' in parents and (fullText contains '…')` with terms from the user's question. For **current** product/workflow questions, add `and modifiedTime >= 'YYYY-MM-DD'` (18 months ago). `page_size`: 20–25. Rank by recency + title match before fetching. |
+| Find reports | `search_drive_files` | `user_google_email`, `query`: `'1yW2GbqKThAskAAKA1UodTWqMzWZbVBo1' in parents and (fullText contains "…")` with terms from the user's question. **Use double quotes** around `fullText contains` values (not single quotes) so apostrophes in terms like `we're` or `user's` do not break the query. For **current** product/workflow questions, add `and modifiedTime >= 'YYYY-MM-DD'` (18 months ago). `page_size`: 20–25. Rank by recency + title match before fetching. |
 | Get Slides content + slide IDs | `get_presentation` | `user_google_email`, `presentation_id` (same as Drive `file_id` from search). Returns per-slide text and `objectId` for deep links. Use for native Google Slides only. |
 | Get Docs / PDF / Office text | `get_drive_file_content` | `user_google_email`, `file_id` (from search results). Use for the 2–4 most relevant non-Slides file IDs only. |
 | Check for document tabs | `inspect_doc_structure` | `user_google_email`, `document_id`. Call after `get_drive_file_content` for Google Docs to discover additional tabs. If tabs exist, call again with each `tab_id` to get per-tab content. |

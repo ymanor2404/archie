@@ -74,6 +74,8 @@ A weekly GitHub Actions pipeline scans the [UXD Research Engagements spreadsheet
 
 For day-to-day Archie queries in Cursor, MCP search applies the same recency rules in [INSTRUCTIONS.md](.cursor/skills/archie/INSTRUCTIONS.md); the index script is optional for local ranking or CI.
 
+**Drive query syntax:** Folder-scoped search uses `'FOLDER_ID' in parents and fullText contains "keyword"` — use **double quotes** for the search term so apostrophes (e.g. `we're`, `user's`) do not break the query.
+
 
 ## Feedback and guidelines
 
