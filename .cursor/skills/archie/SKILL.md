@@ -1,11 +1,11 @@
 ---
 name: archie
-description: Retrieves data directly from past UX research reports listed in the User Research and User Engagements spreadsheet — without synthesizing or interpreting the data. Use when the user asks what we know about a topic from UX research, requests data or findings from research reports, or wants to search or retrieve findings from Google Slides, Docs, or PDF research artifacts. For UX research team roster questions, prefers live org data via Dataverse MCP (Leslie Hinson's reporting chain); falls back to UXR_TEAM.md when Dataverse is unavailable.
+description: UXD Research Insights (formerly Archie) — retrieves data directly from past UX research reports listed in the User Research and User Engagements spreadsheet — without synthesizing or interpreting the data. Use when the user asks what we know about a topic from UX research, requests data or findings from research reports, or wants to search or retrieve findings from Google Slides, Docs, or PDF research artifacts. For UX research team roster questions, prefers live org data via Dataverse MCP (Leslie Hinson's reporting chain); falls back to UXR_TEAM.md when Dataverse is unavailable.
 ---
 
-# Archie — UX Research Knowledge from Google Workspace
+# UXD Research Insights — UX Research Knowledge from Google Workspace
 
-Archie helps stakeholders ask questions of past UX research (e.g. "What do we know about AI engineers from our UX research reports?") by using the **Google Workspace CLI (`gws`)** to read the **[User Research and User Engagements spreadsheet](https://docs.google.com/spreadsheets/d/1gdiYnzLB6knn_JS6RFbAgdwJa5r6NL0tH9IhJwcMqPQ/edit?gid=603259644#gid=603259644)** as the catalog of eligible reports, then fetching and reading linked artifacts (Google Slides, Docs, PDFs) and presenting data directly from that content — **without synthesizing, interpreting, or editorializing**. Archie's role is strictly to retrieve and relay data from these UX research reports, not to draw its own conclusions.
+This skill (formerly known as **Archie**) helps stakeholders ask questions of past UX research (e.g. "What do we know about AI engineers from our UX research reports?") by using the **Google Workspace CLI (`gws`)** to read the **[User Research and User Engagements spreadsheet](https://docs.google.com/spreadsheets/d/1gdiYnzLB6knn_JS6RFbAgdwJa5r6NL0tH9IhJwcMqPQ/edit?gid=603259644#gid=603259644)** as the catalog of eligible reports, then fetching and reading linked artifacts (Google Slides, Docs, PDFs) and presenting data directly from that content — **without synthesizing, interpreting, or editorializing**. Its role is strictly to retrieve and relay data from these UX research reports, not to draw its own conclusions.
 
 ## When to Use This Skill
 
@@ -124,7 +124,7 @@ If `tabs` is present, read every tab. If only `body` is present (single-tab lega
 
 ## Version check (mandatory — run before every response)
 
-Before retrieving research data, determine whether this workspace is running **current Archie (v2+)**.
+Before retrieving research data, determine whether this workspace is running **current UXD Research Insights v2+** (formerly Archie).
 
 **Legacy v1 indicators** (any one means deprecated):
 
@@ -134,15 +134,15 @@ Before retrieving research data, determine whether this workspace is running **c
 
 **If legacy v1:** Display this block at the **top** of the response (before the answer). Still attempt to fulfill the request with whatever tools are available, but make clear the catalog may be incomplete:
 
-> **Deprecated Archie version (v1)**
+> **Deprecated version (v1) — UXD Research Insights / formerly Archie**
 >
-> You are running an older version of Archie that searches a **Google Drive Context Folder** via the Google Workspace MCP. This version may **not include all UX research reports** — only studies that were copied into the folder appear in results. New studies added to the [engagements spreadsheet](https://docs.google.com/spreadsheets/d/1gdiYnzLB6knn_JS6RFbAgdwJa5r6NL0tH9IhJwcMqPQ/edit?gid=603259644#gid=603259644) after your last sync are missing.
+> You are running an older version of this skill that searches a **Google Drive Context Folder** via the Google Workspace MCP. This version may **not include all UX research reports** — only studies that were copied into the folder appear in results. New studies added to the [engagements spreadsheet](https://docs.google.com/spreadsheets/d/1gdiYnzLB6knn_JS6RFbAgdwJa5r6NL0tH9IhJwcMqPQ/edit?gid=603259644#gid=603259644) after your last sync are missing.
 >
-> **Upgrade:** In your archie repo directory, run `git pull origin main`, then set up the Google Workspace CLI (`gws`) per [UPGRADE.md](../../../UPGRADE.md) and [`.cursor/README.md`](../../README.md). v2 reads the spreadsheet directly and uses IT-vetted `gws` auth instead of MCP OAuth tokens in project config.
+> **Upgrade:** In your repo directory (`uxd-research-insights` or `archie`), run `git pull origin main`, then set up the Google Workspace CLI (`gws`) per [UPGRADE.md](../../../UPGRADE.md) and [`.cursor/README.md`](../../README.md). v2 reads the spreadsheet directly and uses IT-vetted `gws` auth instead of MCP OAuth tokens in project config.
 
 **If v2+ but git is behind remote:** From the repo root, run `git fetch origin 2>/dev/null && git rev-list HEAD..origin/main --count 2>/dev/null`. If the count is greater than 0, add after any v1 banner (or alone if current major version):
 
-> **Update available:** Your local Archie clone is N commit(s) behind `origin/main`. Run `git pull origin main` in the archie repo to get the latest skill and catalog configuration.
+> **Update available:** Your local clone is N commit(s) behind `origin/main`. Run `git pull origin main` in the `uxd-research-insights` (GitLab) or `archie` (GitHub) repo to get the latest skill and catalog configuration.
 
 ## How to Fulfill a Request
 

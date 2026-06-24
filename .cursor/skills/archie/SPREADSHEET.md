@@ -1,8 +1,8 @@
-# UX Research Engagements Spreadsheet — Archie's Source of Truth
+# UX Research Engagements Spreadsheet — Source of Truth
 
-Archie's **only catalog** of eligible UX research reports is the [User Research and User Engagements spreadsheet](https://docs.google.com/spreadsheets/d/1gdiYnzLB6knn_JS6RFbAgdwJa5r6NL0tH9IhJwcMqPQ/edit?gid=603259644#gid=603259644). Archie uses the **Google Workspace CLI (`gws`)** to read this spreadsheet, then fetches linked report artifacts (Slides, Docs, PDFs) by file ID.
+This skill (formerly known as **Archie**) uses the following as its **only catalog** of eligible UX research reports: the [User Research and User Engagements spreadsheet](https://docs.google.com/spreadsheets/d/1gdiYnzLB6knn_JS6RFbAgdwJa5r6NL0tH9IhJwcMqPQ/edit?gid=603259644#gid=603259644). It uses the **Google Workspace CLI (`gws`)** to read this spreadsheet, then fetches linked report artifacts (Slides, Docs, PDFs) by file ID.
 
-**Do not** use Archie's old Context Folder on Drive as a catalog. Reports outside this spreadsheet (or rows that fail the eligibility filter below) are out of scope.
+**Do not** use the old Context Folder on Drive as a catalog. Reports outside this spreadsheet (or rows that fail the eligibility filter below) are out of scope.
 
 ---
 

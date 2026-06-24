@@ -1,8 +1,8 @@
-# Cursor setup for Archie
+# Cursor setup for UXD Research Insights
 
-Archie uses the **Google Workspace CLI (`gws`)** to read the UX research catalog from Google Sheets and fetch linked reports from Drive, Docs, and Slides. Each user installs and authenticates `gws` on their own machine. Credentials are stored locally in `~/.config/gws/` — not in this repo.
+**UXD Research Insights** (formerly known as **Archie**) uses the **Google Workspace CLI (`gws`)** to read the UX research catalog from Google Sheets and fetch linked reports from Drive, Docs, and Slides. Each user installs and authenticates `gws` on their own machine. Credentials are stored locally in `~/.config/gws/` — not in this repo.
 
-**No Google Workspace MCP server is required or supported** for Archie in this repo. Do not configure a `google_workspace` / `workspace-mcp` server for research retrieval — use `gws` shell commands instead (see the Archie skill). If you previously used the MCP-based setup, see [UPGRADE.md](../UPGRADE.md).
+**No Google Workspace MCP server is required or supported** for this skill. Do not configure a `google_workspace` / `workspace-mcp` server for research retrieval — use `gws` shell commands instead (see the skill in `.cursor/skills/archie/`). If you previously used the MCP-based setup, see [UPGRADE.md](../UPGRADE.md).
 
 ---
 
@@ -22,7 +22,7 @@ Summary of the steps in that guide:
 6. **Authenticate** — Run `gws auth login`, open the URL in your browser, and complete sign-in.
 7. **Enable APIs** — Run a test command (e.g. `gws drive files list --params '{"pageSize": 5}'`). If you get an `accessNotConfigured` error, open the enable URL from the error and click **Enable**. Repeat for each API you need.
 
-For Archie, enable at least **Drive**, **Docs**, **Sheets**, and **Slides** in your GCP project. After setup, log in with Archie's scopes:
+Enable at least **Drive**, **Docs**, **Sheets**, and **Slides** in your GCP project. After setup, log in with the required scopes:
 
 ```bash
 gws auth login -s drive,docs,slides,sheets
@@ -49,7 +49,7 @@ You also need view access to the [User Research and User Engagements spreadsheet
 
 ## Optional: Dataverse MCP (live UX research team roster only)
 
-This is **optional** and **separate from research retrieval** (which uses `gws` only). Archie can answer "who is on the UX research team?" from **live org data** via Red Hat's Dataverse MCP (RoverPeople). Without it, Archie uses a static roster in `UXR_TEAM.md` and warns that it may be less current.
+This is **optional** and **separate from research retrieval** (which uses `gws` only). The skill can answer "who is on the UX research team?" from **live org data** via Red Hat's Dataverse MCP (RoverPeople). Without it, it uses a static roster in `UXR_TEAM.md` and warns that it may be less current.
 
 1. Copy the example config:
 
@@ -60,13 +60,13 @@ cp .cursor/dataverse-mcp.json .cursor/mcp.json
 2. Open **Cursor Settings → Tools & MCP** and ensure the Dataverse server is enabled.
 3. Restart Cursor. The first team query may prompt Snowflake OAuth sign-in.
 
-See [DATAVERSE_UXR.md](skills/archie/DATAVERSE_UXR.md) for how Archie scopes the team (Leslie Hinson + full reporting chain).
+See [DATAVERSE_UXR.md](skills/archie/DATAVERSE_UXR.md) for how the skill scopes the team (Leslie Hinson + full reporting chain).
 
 ---
 
 ## Recommended model
 
-In Cursor chat, select the **latest Claude Sonnet** model and use **Agent** mode (not Ask-only) so Archie can run `gws` commands.
+In Cursor chat, select the **latest Claude Sonnet** model and use **Agent** mode (not Ask-only) so the agent can run `gws` commands.
 
 | Choice | Guidance |
 |--------|----------|
@@ -82,6 +82,13 @@ More detail is in the repo [README — Recommended model](../README.md#recommend
 
 1. Clone this repo:
 
+**GitLab (Red Hat internal — recommended):**
+```bash
+git clone https://gitlab.cee.redhat.com/ymanor/uxd-research-insights
+cd uxd-research-insights
+```
+
+**GitHub (mirror):**
 ```bash
 git clone https://github.com/ymanor2404/archie
 cd archie
@@ -90,7 +97,7 @@ cd archie
 2. Install and authenticate `gws` (see [Set up `gws`](#set-up-gws) above).
 3. Open the project in **Cursor**.
 4. Set model to **latest Claude Sonnet** and **Agent** mode.
-5. Ask an Archie question (e.g. "What do we know about AI engineers from our UX research reports?").
+5. Ask a research question (e.g. "What do we know about AI engineers from our UX research reports?").
 
 ---
 
@@ -113,7 +120,7 @@ cd archie
 
 Each teammate repeats the same setup on their computer:
 
-1. Clone `archie`
+1. Clone `uxd-research-insights` (GitLab) or `archie` (GitHub mirror)
 2. Install and authenticate `gws` (workshop guide)
 3. Open in Cursor, Agent mode
 

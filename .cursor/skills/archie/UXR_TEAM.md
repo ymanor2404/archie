@@ -1,10 +1,10 @@
 # UX Research Team — Roster and Structure (fallback)
 
-> **Preferred source:** When the [Dataverse MCP](DATAVERSE_UXR.md) is configured, Archie queries live org data for **Leslie Hinson and her entire reporting chain** (the full UX research team). Use this file **only as a fallback** when Dataverse is unavailable.
+> **Preferred source:** When the [Dataverse MCP](DATAVERSE_UXR.md) is configured, this skill (formerly known as **Archie**) queries live org data for **Leslie Hinson and her entire reporting chain** (the full UX research team). Use this file **only as a fallback** when Dataverse is unavailable.
 >
 > **Staleness warning:** This static roster may not reflect recent hires, departures, or reporting-line changes. Users without Dataverse should treat it as approximate and verify against current org data when accuracy matters.
 
-This file is **supplemental context** for Archie. Use it to answer questions about who is on the UX research team, which product space each researcher covers, and reporting lines when Dataverse cannot be queried. **Do not use this file as a source for research findings** — those come only from eligible rows in the [User Research and User Engagements spreadsheet](https://docs.google.com/spreadsheets/d/1gdiYnzLB6knn_JS6RFbAgdwJa5r6NL0tH9IhJwcMqPQ/edit?gid=603259644#gid=603259644) catalog and their linked reports.
+This file is **supplemental context** for UXD Research Insights (formerly **Archie**). Use it to answer questions about who is on the UX research team, which product space each researcher covers, and reporting lines when Dataverse cannot be queried. **Do not use this file as a source for research findings** — those come only from eligible rows in the [User Research and User Engagements spreadsheet](https://docs.google.com/spreadsheets/d/1gdiYnzLB6knn_JS6RFbAgdwJa5r6NL0tH9IhJwcMqPQ/edit?gid=603259644#gid=603259644) catalog and their linked reports.
 
 **Maintained by:** UX Research leadership. Update when staffing or portfolio assignments change.
 
