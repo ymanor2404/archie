@@ -4,7 +4,7 @@
 >
 > **Staleness warning:** This static roster may not reflect recent hires, departures, or reporting-line changes. Users without Dataverse should treat it as approximate and verify against current org data when accuracy matters.
 
-This file is **supplemental context** for Archie. Use it to answer questions about who is on the UX research team, which product space each researcher covers, and reporting lines when Dataverse cannot be queried. **Do not use this file as a source for research findings** — those come only from Archie's Context Folder on Google Drive.
+This file is **supplemental context** for Archie. Use it to answer questions about who is on the UX research team, which product space each researcher covers, and reporting lines when Dataverse cannot be queried. **Do not use this file as a source for research findings** — those come only from eligible rows in the [User Research and User Engagements spreadsheet](https://docs.google.com/spreadsheets/d/1gdiYnzLB6knn_JS6RFbAgdwJa5r6NL0tH9IhJwcMqPQ/edit?gid=603259644#gid=603259644) catalog and their linked reports.
 
 **Maintained by:** UX Research leadership. Update when staffing or portfolio assignments change.
 
@@ -64,6 +64,12 @@ This file is **supplemental context** for Archie. Use it to answer questions abo
 | Flo Forno |
 | Andreas Nilsson |
 
+### Program and Practice — Manager: Leslie Hinson
+
+| Researcher |
+|------------|
+| Stephanie Bailey |
+
 ---
 
 ## Quick lookup: researcher → manager → product space
@@ -88,6 +94,6 @@ This file is **supplemental context** for Archie. Use it to answer questions abo
 - **When to use this file:** Only when [Dataverse MCP](DATAVERSE_UXR.md) is not available. Prefer Dataverse for all roster questions when configured.
 - **In scope:** "Who is on the UX research team?", "Who covers OpenShift / RH AI?", "Who is my researcher for Ansible?", "Who manages [name]?"
 - **Source citation schema:** When tagging findings with a product area, prefer names from the **Full-time UX researchers by product space** sections above (Ansible, Hybrid Platforms, Applied AI and UIE, Red Hat AI (RH AI), Core Platforms). Match an author in the quick-lookup table to assign a portfolio when the report does not state one.
-- **When research is missing in the Context Folder:** Suggest the researcher or manager for the relevant product space (from the tables above), in addition to refining the question or checking the [User Research and User Engagements spreadsheet](https://docs.google.com/spreadsheets/d/1gdiYnzLB6knn_JS6RFbAgdwJa5r6NL0tH9IhJwcMqPQ/edit?usp=sharing).
+- **When research is missing from the catalog:** Suggest the researcher or manager for the relevant product space (from the tables above), in addition to refining the question or checking the [User Research and User Engagements spreadsheet](https://docs.google.com/spreadsheets/d/1gdiYnzLB6knn_JS6RFbAgdwJa5r6NL0tH9IhJwcMqPQ/edit?gid=603259644#gid=603259644).
 - **Slack:** General UX research questions — [#uxd-research](https://redhat.enterprise.slack.com/archives/C04JV6Y5SCF). Study planning review — `#uxd-research-team`.
 - **Out of scope for this file:** Headcount outside this roster, contractors, PWDRs, Research & Ops, or designers — unless explicitly added here later.

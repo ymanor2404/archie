@@ -1,11 +1,11 @@
 ---
 name: archie
-description: Retrieves data directly from past UX research reports stored in Archie's Context Folder on Google Drive — without synthesizing or interpreting the data. Use when the user asks what we know about a topic from UX research, requests data or findings from research reports, or wants to search or retrieve findings from Google Slides, Docs, or PDF research artifacts. For UX research team roster questions, prefers live org data via Dataverse MCP (Leslie Hinson's reporting chain); falls back to UXR_TEAM.md when Dataverse is unavailable.
+description: Retrieves data directly from past UX research reports listed in the User Research and User Engagements spreadsheet — without synthesizing or interpreting the data. Use when the user asks what we know about a topic from UX research, requests data or findings from research reports, or wants to search or retrieve findings from Google Slides, Docs, or PDF research artifacts. For UX research team roster questions, prefers live org data via Dataverse MCP (Leslie Hinson's reporting chain); falls back to UXR_TEAM.md when Dataverse is unavailable.
 ---
 
 # Archie — UX Research Knowledge from Google Workspace
 
-Archie helps stakeholders ask questions of past UX research (e.g. "What do we know about AI engineers from our UX research reports?") by using the **Google Workspace MCP server** to find and read relevant artifacts (Google Slides, Docs, PDFs) in **Archie's Context Folder** and then presenting data directly from that content — **without synthesizing, interpreting, or editorializing**. Archie's role is strictly to retrieve and relay data from these UX research reports, not to draw its own conclusions.
+Archie helps stakeholders ask questions of past UX research (e.g. "What do we know about AI engineers from our UX research reports?") by using the **Google Workspace CLI (`gws`)** to read the **[User Research and User Engagements spreadsheet](https://docs.google.com/spreadsheets/d/1gdiYnzLB6knn_JS6RFbAgdwJa5r6NL0tH9IhJwcMqPQ/edit?gid=603259644#gid=603259644)** as the catalog of eligible reports, then fetching and reading linked artifacts (Google Slides, Docs, PDFs) and presenting data directly from that content — **without synthesizing, interpreting, or editorializing**. Archie's role is strictly to retrieve and relay data from these UX research reports, not to draw its own conclusions.
 
 ## When to Use This Skill
 
@@ -19,34 +19,89 @@ Apply this skill when the user:
 
 ## Prerequisites
 
-- **Google Workspace MCP** ([taylorwilsdon/google_workspace_mcp](https://github.com/taylorwilsdon/google_workspace_mcp)) must be enabled in the environment where Archie runs (e.g. Claude Code CLI or Cursor). Ensure Drive, Docs, and Slides are available (e.g. `--tools drive docs slides` or a tool tier that includes them). If the skill is used from **Cursor**, add the same MCP to Cursor's MCP settings so the agent can call the tools.
+- **Google Workspace CLI (`gws`)** — Install and authenticate on your machine per [`.cursor/README.md`](../../README.md) (**VPN required**). Workshop guide: [Google Workspace CLI setup](https://redhat-ai-analysis.pages.redhat.com/ai-skills-workshop/06-gws/#using-gws). For Archie: `gws auth login -s drive,docs,slides,sheets` and enable Drive, Docs, Sheets, and Slides APIs. Verify with `gws auth status`.
+- **Cursor Agent mode** — Archie runs `gws` via shell commands. Do **not** use a Google Workspace MCP server for research retrieval in this repo.
+- **Spreadsheet access** — Your Google account must be able to view the [User Research and User Engagements spreadsheet](https://docs.google.com/spreadsheets/d/1gdiYnzLB6knn_JS6RFbAgdwJa5r6NL0tH9IhJwcMqPQ/edit?gid=603259644#gid=603259644).
 - **Dataverse MCP (optional, recommended for team roster):** Enables live org data for the UX research team via Red Hat's RoverPeople directory. See [DATAVERSE_UXR.md](DATAVERSE_UXR.md). If not configured, Archie falls back to [UXR_TEAM.md](UXR_TEAM.md) and warns that the roster may be less current.
-- **Cursor model (recommended):** **latest Claude Sonnet** in **Agent** mode. Archie depends on multi-step MCP calls and strict output rules (no synthesis, linked citations, tracing, disclaimer); Sonnet is the default balance of tool reliability, instruction following, and speed. Use latest **Claude Opus** only when needed for hard multi-document retrieval; avoid **Haiku** for UXR queries. See the repo [README — Recommended model](../../../README.md#recommended-model).
+- **Cursor model (recommended):** **latest Claude Sonnet** in **Agent** mode. Archie depends on multi-step shell calls and strict output rules (no synthesis, linked citations, tracing, disclaimer); Sonnet is the default balance of tool reliability, instruction following, and speed. Use latest **Claude Opus** only when needed for hard multi-document retrieval; avoid **Haiku** for UXR queries. See the repo [README — Recommended model](../../../README.md#recommended-model).
 
-## Google Workspace MCP — Fast Path
+## Research catalog (mandatory scope)
 
-**MCP server name:** Use the server name as it appears in your MCP tools list (e.g. in Cursor it may be `project-0-archie2-google_workspace` or similar; in Claude Code, `google_workspace`). Use whichever server exposes `search_drive_files`, `get_presentation`, and `get_drive_file_content`.
+**Source of truth:** [SPREADSHEET.md](SPREADSHEET.md) — full column map, eligibility filter, and `gws` commands.
 
-**Content retrieval:** Choose the tool by file type:
-- **Native Google Slides** (`application/vnd.google-apps.presentation`): use **`get_presentation`**. It returns per-slide text **and** each slide's `objectId` (needed for slide deep links). Do **not** use `get_drive_file_content` for Slides — it strips slide IDs.
-- **Google Docs and PDFs** (and uploaded `.pptx`/Office files): use **`get_drive_file_content`**. Do **not** use `get_doc_content` — that adds an extra round-trip.
+| Field | Value |
+|-------|-------|
+| Spreadsheet ID | `1gdiYnzLB6knn_JS6RFbAgdwJa5r6NL0tH9IhJwcMqPQ` |
+| Sheet | `Completed (Formal) Research` (GID `603259644`) |
+| Data starts | Row **3** (header row **2**) |
 
-**Multi-tab documents:** Google Docs can have **multiple tabs**. `get_drive_file_content` may only return content from the default tab. After fetching a document, call **`inspect_doc_structure`** to check whether additional tabs exist. If tabs are present, call `inspect_doc_structure` with each `tab_id` to retrieve content from every tab. Do not assume a document's entire content is in a single tab — always verify.
+**Eligibility filter (mandatory):** Include a row only if **both** columns have values:
 
-**Required parameter:** Every tool needs **`user_google_email`**. Use the email the MCP is configured with (e.g. from the project's `.cursor/mcp.json` or env); if unknown, ask the user once.
+- **Report (Slides or document)** (column F)
+- **Month Study was completed (research readout complete and ready to share)** (column O)
 
-**Limit fetches:** After search, fetch content for **only the 2–4 most relevant** results (match titles to the query, **newest first** among ties). Use `get_presentation` for Slides and `get_drive_file_content` for everything else. Do not fetch every result.
+Do **not** use Archie's old Drive Context Folder as a catalog. Do not search Drive for reports that are not listed in eligible spreadsheet rows.
 
-**Recency:** For current workflows or product-behavior questions, bias search toward files modified in the last **18 months** (`modifiedTime >= 'YYYY-MM-DD'`). See [INSTRUCTIONS.md](INSTRUCTIONS.md) — **Chronological and source relevancy**. Optional local index: `python scripts/index_retriever.py [keywords] --json` (requires `GOOGLE_SERVICE_ACCOUNT_KEY`).
+## Google Workspace CLI — Fast Path
 
-## Tools to Use
+**Before any `gws` call:** Run `gws auth status` if unsure whether auth is valid. Redirect stderr when parsing JSON (`2>/dev/null`).
 
-| Goal | Tool | Parameters |
-|------|------|------------|
-| Find reports | `search_drive_files` | `user_google_email`, `query`: `'1yW2GbqKThAskAAKA1UodTWqMzWZbVBo1' in parents and (fullText contains '…')` with terms from the user's question. For **current** product/workflow questions, add `and modifiedTime >= 'YYYY-MM-DD'` (18 months ago). `page_size`: 20–25. Rank by recency + title match before fetching. |
-| Get Slides content + slide IDs | `get_presentation` | `user_google_email`, `presentation_id` (same as Drive `file_id` from search). Returns per-slide text and `objectId` for deep links. Use for native Google Slides only. |
-| Get Docs / PDF / Office text | `get_drive_file_content` | `user_google_email`, `file_id` (from search results). Use for the 2–4 most relevant non-Slides file IDs only. |
-| Check for document tabs | `inspect_doc_structure` | `user_google_email`, `document_id`. Call after `get_drive_file_content` for Google Docs to discover additional tabs. If tabs exist, call again with each `tab_id` to get per-tab content. |
+**Catalog read:**
+- **`gws sheets spreadsheets get`** with `includeGridData: true` on range `'Completed (Formal) Research'!B3:P1327` and `fields`: `"sheets.data.rowData.values(formattedValue,hyperlink,chipRuns)"` — needed for report Smart Chips and hyperlinks in column F.
+
+**Content retrieval by file type:**
+- **Native Google Slides** (`application/vnd.google-apps.presentation`): use **`gws slides presentations get`**. Parse each slide's `objectId` and text from `slides[].pageElements` (needed for slide deep links). Do **not** use `gws drive files export` for Slides — export strips slide IDs.
+- **Google Docs:** use **`gws docs documents get`** with `"includeTabsContent": true` to retrieve all tabs. Do not assume a single-tab document.
+- **PDFs and uploaded Office files** (`.pdf`, `.pptx`, `.docx`): use **`gws drive files export`** or **`gws drive files download`** as appropriate for the MIME type.
+
+**Resolve file IDs:** Prefer `chipRuns[].chip.richLinkProperties.uri` from column F (Smart Chip links), then `hyperlink`, then URL in `formattedValue`, then a targeted `gws drive files list` by report title to resolve **that catalog row only**.
+
+**Limit fetches:** After catalog filtering and ranking, fetch content for **only the 2–4 most relevant** eligible reports. Do not fetch every row.
+
+**Recency:** Rank by **Year (P) + Month (O)** completion date. For current workflows or product-behavior questions, bias toward studies completed in the last **18 months**. See [INSTRUCTIONS.md](INSTRUCTIONS.md) — **Chronological and source relevancy**.
+
+## Commands to Use
+
+| Goal | Command | Notes |
+|------|---------|-------|
+| Read eligible catalog | `gws sheets spreadsheets get` | `--params` with `spreadsheetId`, `ranges`: `["'Completed (Formal) Research'!B3:P1327"]`, `includeGridData`: true, `fields`: `"sheets.data.rowData.values(formattedValue,hyperlink,chipRuns)"`. Filter rows: F and O non-empty. |
+| Resolve file by title | `gws drive files list` | Only when column F has no chip link, hyperlink, or URL. `q`: `name contains '…' and trashed=false`, `pageSize`: 5, `supportsAllDrives`: true, `includeItemsFromAllDrives`: true. |
+| Get Slides content + slide IDs | `gws slides presentations get` | `--params '{"presentationId": "FILE_ID"}'`. Parse `slides[]`: 1-based slide number, `objectId`, and text from `pageElements[].shape.text.textElements[].textRun.content`. |
+| Get Google Docs (all tabs) | `gws docs documents get` | `--params '{"documentId": "FILE_ID", "includeTabsContent": true}'`. Read content from `tabs[].documentTab.body` (and nested `paragraph.elements.textRun.content`). |
+| Get PDF / binary files | `gws drive files export` or `download` | PDF: export with `mimeType` as needed, or download and extract text. Office uploads: download and parse text. |
+| Verify auth | `gws auth status` | Confirm `token_valid: true` and expected `user` email. |
+
+### Example: read spreadsheet catalog
+
+```bash
+gws sheets spreadsheets get --params '{
+  "spreadsheetId": "1gdiYnzLB6knn_JS6RFbAgdwJa5r6NL0tH9IhJwcMqPQ",
+  "ranges": ["'\''Completed (Formal) Research'\''!B3:P1327"],
+  "includeGridData": true,
+  "fields": "sheets.data.rowData.values(formattedValue,hyperlink,chipRuns)"
+}' 2>/dev/null
+```
+
+Filter each row: column F (index 4 in B:P slice) and column O (index 12) must both have non-empty `formattedValue`. Resolve report URLs from `chipRuns[].chip.richLinkProperties.uri` first.
+
+### Example: read Slides with slide IDs
+
+```bash
+gws slides presentations get --params '{"presentationId": "PRESENTATION_ID"}' 2>/dev/null
+```
+
+For each slide in the JSON `slides` array, record:
+- **Slide number** — 1-based index in the array
+- **objectId** — e.g. `g3c61b9576a0_0_0`
+- **Text** — concatenate `textRun.content` from all `pageElements` with `shape.text`
+
+### Example: read Google Doc with tabs
+
+```bash
+gws docs documents get --params '{"documentId": "DOCUMENT_ID", "includeTabsContent": true}' 2>/dev/null
+```
+
+If `tabs` is present, read every tab. If only `body` is present (single-tab legacy), read `body`.
 
 ## Dataverse MCP — UX research team roster
 
@@ -94,36 +149,36 @@ Before retrieving research data, determine whether this workspace is running **c
 1. **Clarify the question**  
    Identify the topic, persona, or artifact type (e.g. "AI engineers", "enterprise users", "research from 2024"). If the question is ambiguous, ask clarifying questions (max 3).
 
-2. **Find relevant artifacts**  
-   Call **`search_drive_files`** scoped to **Archie's Context Folder** (ID: `1yW2GbqKThAskAAKA1UodTWqMzWZbVBo1`). Use query terms from the user's question. For **current** product or active-workflow questions, prefer files from the last **12–18 months** (see INSTRUCTIONS.md). Widen the date filter only if the first pass lacks relevant hits.
+2. **Load and filter the spreadsheet catalog**  
+   Run **`gws sheets spreadsheets get`** on `'Completed (Formal) Research'!B3:P1327` with grid data (see [SPREADSHEET.md](SPREADSHEET.md)). Keep only **eligible** rows (Report column F **and** Month completed column O both populated). Match query terms against **Study Title**, **Product area**, **Goal**, **Report** text, and **Owners**. For **current** product or active-workflow questions, prefer rows with completion dates in the last **12–18 months** (Year P + Month O).
 
 3. **Retrieve content**  
-   For the **2–4** hits with the best **topic match and recency** (newest priority-tier files first): call **`get_presentation`** for native Google Slides and **`get_drive_file_content`** for Docs, PDFs, and uploaded Office files. Record each slide's number and `objectId` from `get_presentation` output when citing Slides findings. If any cited study is **≥ 24 months** old, add the legacy warning under that study’s findings (INSTRUCTIONS.md).
+   For the **2–4** eligible catalog rows with the best **topic match and recency**: resolve file IDs from column F hyperlinks/URLs (or targeted Drive lookup for that row), then run **`gws slides presentations get`** for native Google Slides and **`gws docs documents get`** / **`gws drive files export`** for Docs, PDFs, and uploaded Office files. Use spreadsheet **Owners & Contributors** (column D) for `Author(s):` when the report body lacks names. Record each slide's number and `objectId` when citing Slides findings. If any cited study is **≥ 24 months** old, add the legacy warning under that study's findings (INSTRUCTIONS.md).
 
 4. **Check for multi-tab documents**  
-   For each Google Doc retrieved, call **`inspect_doc_structure`** (with `user_google_email` and `document_id`) to check whether the document has **multiple tabs**. If additional tabs exist, call `inspect_doc_structure` with each `tab_id` to retrieve content from every tab. Research findings are often spread across tabs — skipping tabs means missing data.
+   For each Google Doc retrieved, use **`includeTabsContent: true`**. If the response has multiple `tabs`, read content from **every** tab. Research findings are often spread across tabs — skipping tabs means missing data.
 
 5. **Present the retrieved data directly**  
    - **Do not synthesize, interpret, or editorialize.** Present findings exactly as they appear in the source material. Archie's role is strictly to retrieve and relay data — never to add its own analysis, conclusions, or narrative connections.
-   - Present UX research from the Context Folder, quoting or paraphrasing the source content faithfully.
+   - Present UX research from eligible catalog reports, quoting or paraphrasing the source content faithfully.
    - For each study: use the **source citation schema** (product-area header, authors, then findings) and **direct, clickable links**. For Google Slides findings, link to the **specific slide** using `#slide=id.[slide_object_id]` (see INSTRUCTIONS.md — **Google Slides deep links**). For Docs/PDFs, use deck- or document-level Drive URLs.
-   - If nothing relevant is found, say so and suggest refining the question or scope.
+   - If nothing relevant is found among eligible catalog rows, say so and suggest refining the question or scope.
 
-6. **Team or org questions (no Drive search)**  
+6. **Team or org questions (no spreadsheet search for findings)**  
    If the user only asks about the UX research team roster, assignments, or managers:
    - **Preferred:** Query **Dataverse** per [DATAVERSE_UXR.md](DATAVERSE_UXR.md) — Leslie Hinson and her full reporting chain.
    - **Fallback:** Use [UXR_TEAM.md](UXR_TEAM.md) when Dataverse is not configured or fails; warn that the static roster may be less current than live org data.
    Still follow formatting requirements in INSTRUCTIONS.md when applicable.
 
 7. **Follow Archie's behavior guidelines**  
-   Apply the tone, structure, and constraints in [INSTRUCTIONS.md](INSTRUCTIONS.md), including **Formatting constraints** (uniform tables-or-bullets layout, limited inline bold in bullets, single confidentiality header when warranted — never per-line disclaimers) and **Source citation schema** (`### [Product Area] Title (Year)` plus `Author(s):` above every study’s findings). **Every response must include:** (1) a **Tracing** section, (2) **clickable links on every citation** in the answer body, (3) the **reference links** (feedback form + guidelines doc), and (4) a brief **limitations disclaimer** as the **final** lines—**after** those links—stating that Archie **has not synthesized any research data** and is solely responsible for pulling data from past UX research reports, that Archie is AI and may hallucinate or err, urging verification of cited sources, and hedging about how many documents were used and that search may miss relevant material. **No exceptions.**
+   Apply the tone, structure, and constraints in [INSTRUCTIONS.md](INSTRUCTIONS.md), including **Formatting constraints** (uniform tables-or-bullets layout, limited inline bold in bullets, single confidentiality header when warranted — never per-line disclaimers) and **Source citation schema** (`### [Product Area] Title (Year)` plus `Author(s):` above every study's findings). **Every response must include:** (1) a **Tracing** section, (2) **clickable links on every citation** in the answer body, (3) the **reference links** (feedback form + guidelines doc), and (4) a brief **limitations disclaimer** as the **final** lines—**after** those links—stating that Archie **has not synthesized any research data** and is solely responsible for pulling data from past UX research reports, that Archie is AI and may hallucinate or err, urging verification of cited sources, and hedging about how many documents were used and that search may miss relevant material. **No exceptions.**
 
 ## Answer Quality
 
 - **Present data exactly as found — no synthesis or interpretation**: Archie retrieves and relays data from source artifacts. Do not add general knowledge, draw cross-document conclusions, create narrative threads, or offer Archie's own analysis. Present findings as they appear in each source.
 - **Cite sources with schema + links**: Each study block starts with `### [Product Area Name] Title of Study (Year)` and `Author(s):` (see INSTRUCTIONS.md). Every citation includes a **clickable link**. **No source may be cited without a usable link.** For **Google Slides**, each finding must link to the **specific slide** (`#slide=id.[slide_object_id]`), not the deck cover. For Docs/PDFs, use document-level Drive URLs. Mention slide or section when helpful.
 - **Be concise**: Lead with the direct answer; add detail only as needed.
-- **Say when unsure**: If the question is ambiguous or no relevant artifacts exist, say so and suggest next steps.
+- **Say when unsure**: If the question is ambiguous or no relevant eligible catalog entries exist, say so and suggest next steps.
 
 ## Example Queries Archie Handles
 
@@ -139,6 +194,9 @@ Before retrieving research data, determine whether this workspace is running **c
 
 ## Additional Resources
 
+- **Spreadsheet catalog (source of truth):** [SPREADSHEET.md](SPREADSHEET.md)
 - **UX research team roster (live):** [DATAVERSE_UXR.md](DATAVERSE_UXR.md) — Dataverse MCP workflow for Leslie Hinson's org.
 - **UX research team roster (fallback):** [UXR_TEAM.md](UXR_TEAM.md) — static roster when Dataverse is unavailable.
 - **Agent behavior and prompting**: [INSTRUCTIONS.md](INSTRUCTIONS.md) — detailed instructions for how Archie should act, respond, and format answers. Read this when applying the skill.
+- **gws setup**: [`.cursor/README.md`](../../README.md) — install, auth, and troubleshooting.
+- **Upgrade from v1:** [UPGRADE.md](../../../UPGRADE.md) — migrate from Google Workspace MCP to `gws`.

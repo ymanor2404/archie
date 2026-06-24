@@ -35,7 +35,7 @@ Do **not** include UX researchers outside Leslie's org subtree (e.g. people in o
 }
 ```
 
-Add this alongside your Google Workspace MCP in Cursor Settings → Tools & MCP, or in `~/.cursor/mcp.json`.
+Add this in Cursor Settings → Tools & MCP, or copy `.cursor/dataverse-mcp.json` to `.cursor/mcp.json` in this project.
 
 ---
 
