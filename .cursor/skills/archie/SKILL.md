@@ -67,6 +67,28 @@ Apply this skill when the user:
 
 **Fallback:** If Dataverse tools are unavailable or the query fails, use [UXR_TEAM.md](UXR_TEAM.md) and include the staleness warning from DATAVERSE_UXR.md.
 
+## Version check (mandatory — run before every response)
+
+Before retrieving research data, determine whether this workspace is running **current Archie (v2+)**.
+
+**Legacy v1 indicators** (any one means deprecated):
+
+- `.cursor/skills/archie/VERSION` is missing or its value is less than `2.0.0`
+- `.cursor/skills/archie/SPREADSHEET.md` is missing
+- This skill uses `search_drive_files`, `get_presentation`, or Archie's Context Folder (`1yW2GbqKThAskAAKA1UodTWqMzWZbVBo1`) as the research catalog
+
+**If legacy v1:** Display this block at the **top** of the response (before the answer). Still attempt to fulfill the request with whatever tools are available, but make clear the catalog may be incomplete:
+
+> **Deprecated Archie version (v1)**
+>
+> You are running an older version of Archie that searches a **Google Drive Context Folder** via the Google Workspace MCP. This version may **not include all UX research reports** — only studies that were copied into the folder appear in results. New studies added to the [engagements spreadsheet](https://docs.google.com/spreadsheets/d/1gdiYnzLB6knn_JS6RFbAgdwJa5r6NL0tH9IhJwcMqPQ/edit?gid=603259644#gid=603259644) after your last sync are missing.
+>
+> **Upgrade:** In your archie repo directory, run `git pull origin main`, then set up the Google Workspace CLI (`gws`) per [UPGRADE.md](../../../UPGRADE.md) and [`.cursor/README.md`](../../README.md). v2 reads the spreadsheet directly and uses IT-vetted `gws` auth instead of MCP OAuth tokens in project config.
+
+**If v2+ but git is behind remote:** From the repo root, run `git fetch origin 2>/dev/null && git rev-list HEAD..origin/main --count 2>/dev/null`. If the count is greater than 0, add after any v1 banner (or alone if current major version):
+
+> **Update available:** Your local Archie clone is N commit(s) behind `origin/main`. Run `git pull origin main` in the archie repo to get the latest skill and catalog configuration.
+
 ## How to Fulfill a Request
 
 1. **Clarify the question**  
